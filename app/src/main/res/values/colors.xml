@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorTextSelextion">#fff</color>
     <color name="colorButton">#0e37af</color>
+    <color name="colorHint">#b3b2b2</color>
 </resources>

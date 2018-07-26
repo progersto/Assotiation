@@ -17,12 +17,18 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
     <style name="ButtonTheme" parent="android:Widget.Button">
         <item name="android:background">@drawable/button_circuit</item>
     </style>
 
+
     <style name="ButtonThemeWithColor" parent="android:Widget.Button">
         <item name="android:background">@drawable/button_circuit_with_color</item>
+    </style>
+
+    <style name="RecyclerTheme" parent="android:Widget.ListView">
+        <item name="android:background">@drawable/recycler_backgroind</item>
     </style>
 
 </resources>

@@ -60,10 +60,17 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/ecyclerViewListPlayer"
+        android:id="@+id/recyclerViewListPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        style="@style/RecyclerTheme"
+        android:layout_marginTop="40dp"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSelection" />
 
 
     <RelativeLayout
@@ -71,20 +78,19 @@
         style="@style/ButtonTheme"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textBtnAddPlayer"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.5"
             android:text="@string/text_add_player"
             android:textColor="@color/colorTextSelextion"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
@@ -93,9 +99,7 @@
         style="@style/ButtonThemeWithColor"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -108,7 +112,7 @@
             android:alpha="0.5"
             android:text="@string/text_next"
             android:textColor="@color/colorTextSelextion"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
