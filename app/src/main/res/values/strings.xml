@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Assotiation</string>
     <string name="splash">N Game</string>
+
+    <string name="text_selection_name">Укажите имена всех игроков</string>
+    <string name="text_selection_difficulty_level">Выберите сложность игры</string>
 </resources>
