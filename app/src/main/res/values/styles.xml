@@ -31,4 +31,8 @@
         <item name="android:background">@drawable/recycler_backgroind</item>
     </style>
 
+    <style name="CircleTheme">
+        <item name="android:src">@drawable/circle</item>
+    </style>
+
 </resources>

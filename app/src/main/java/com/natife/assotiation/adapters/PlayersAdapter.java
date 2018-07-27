@@ -1,9 +1,13 @@
 package com.natife.assotiation.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +25,13 @@ import java.util.List;
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private List<String> list;
+    private List<Integer> listColor;
     private Context context;
 
-    public PlayersAdapter(Context context, List<String> list) {
+    public PlayersAdapter(Context context, List<String> list, List<Integer> listColor) {
         this.inflater = LayoutInflater.from(context);
         this.list = new ArrayList<>(list);
+        this.listColor = new ArrayList<>(listColor);
         this.context = context;
     }//AdapterProductList
 
@@ -47,7 +53,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     } // onCreateViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout constraint_item_player;
+        ConstraintLayout constraint_item_player;
         ImageView imageColor;
         TextView editTextPlayerName;
         RelativeLayout imageVoice;
@@ -64,6 +70,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.editTextPlayerName.setHint(list.get(position));
+        holder.imageColor.setColorFilter(ContextCompat.getColor(context, listColor.get(position)));
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

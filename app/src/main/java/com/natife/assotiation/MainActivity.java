@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.natife.assotiation.adapters.PlayersAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,10 +24,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageView settings;
     private RelativeLayout btnAddPlayer;
     private RelativeLayout btnNext;
-    private TextView textBtnAddPlayer;
     private TextView textBtnNext;
     private List<String> listName;
+    private List<Integer> listColor;
     private PlayersAdapter adapterPlayers;
+    private View viewRadioButton;
+    private boolean flagSettingName = true;
+    private TextView textSelection;
 
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -40,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initPlayerList();
         recyclerPlayers.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapterPlayers = new PlayersAdapter(MainActivity.this, listName);
+        adapterPlayers = new PlayersAdapter(MainActivity.this, listName, listColor);
         recyclerPlayers.setAdapter(adapterPlayers);
     }//onCreate
 
     private void initPlayerList() {
         listName = new ArrayList<>();
+        listColor = Arrays.asList(R.color.colorPlayer1, R.color.colorPlayer2, R.color.colorPlayer3,
+                R.color.colorPlayer4, R.color.colorPlayer5, R.color.colorPlayer6);
         for (int i = 0; i < 3; i++) {
             listName.add(getResources().getString(R.string.name_player) + " " + (i + 1));
         }
@@ -54,18 +60,52 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         recyclerPlayers = findViewById(R.id.recyclerViewListPlayer);
+        textSelection = findViewById(R.id.textSelection);
         back = findViewById(R.id.back);
         settings = findViewById(R.id.settings);
         btnAddPlayer = findViewById(R.id.buttonAddPlayer);
         btnNext = findViewById(R.id.buttonNext);
         textBtnNext = findViewById(R.id.textBtnNext);
+        viewRadioButton = findViewById(R.id.viewRadioButton);
         btnAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listName.size() <= 5)
                     listName.add(getResources().getString(R.string.name_player) + " " + (listName.size() + 1));
-                adapterPlayers = new PlayersAdapter(MainActivity.this, listName);
+                adapterPlayers = new PlayersAdapter(MainActivity.this, listName, listColor);
                 recyclerPlayers.setAdapter(adapterPlayers);
+            }
+        });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (flagSettingName) {
+                    recyclerPlayers.setVisibility(View.GONE);
+                    viewRadioButton.setVisibility(View.VISIBLE);
+                    back.setVisibility(View.VISIBLE);
+                    settings.setVisibility(View.VISIBLE);
+                    btnAddPlayer.setVisibility(View.GONE);
+                    textBtnNext.setText(R.string.text_play);
+                    textSelection.setText(R.string.text_selection_difficulty_level);
+                    flagSettingName = false;
+                }else {
+                    flagSettingName = true;
+                    //start to play...
+
+                }
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerPlayers.setVisibility(View.VISIBLE);
+                viewRadioButton.setVisibility(View.GONE);
+                back.setVisibility(View.GONE);
+                settings.setVisibility(View.GONE);
+                btnAddPlayer.setVisibility(View.VISIBLE);
+                textBtnNext.setText(R.string.text_next);
+                textSelection.setText(R.string.text_selection_name);
+                flagSettingName = true;
             }
         });
     }//initView

@@ -13,9 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back_black_24dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +28,7 @@
         android:layout_height="29dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_splash_logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,10 +39,12 @@
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:padding="8dp"
         android:src="@drawable/ic_settings_black_24dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +52,7 @@
         android:id="@+id/textSelection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:alpha="0.5"
         android:gravity="center"
         android:text="@string/text_selection_name"
@@ -61,33 +65,47 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewListPlayer"
+        style="@style/RecyclerTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        style="@style/RecyclerTheme"
         android:layout_marginTop="40dp"
+        android:visibility="visible"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textSelection" />
 
 
+    <include
+        android:id="@+id/viewRadioButton"
+        layout="@layout/select_difficulty_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSelection" />
+
     <RelativeLayout
         android:id="@+id/buttonAddPlayer"
         style="@style/ButtonTheme"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.5"
+            android:gravity="center"
             android:text="@string/text_add_player"
             android:textColor="@color/colorTextSelextion"
             android:textSize="16sp" />
@@ -99,17 +117,17 @@
         style="@style/ButtonThemeWithColor"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textBtnNext"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.5"
+            android:gravity="center"
             android:text="@string/text_next"
             android:textColor="@color/colorTextSelextion"
             android:textSize="16sp" />
