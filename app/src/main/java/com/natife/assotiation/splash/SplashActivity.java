@@ -1,12 +1,11 @@
-package com.natife.assotiation.activities;
+package com.natife.assotiation.splash;
 
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.natife.assotiation.R;
 
-import static com.natife.assotiation.MainActivity.start;
-
+import static com.natife.assotiation.initgame.InitGameActivity.start;
 
 public class SplashActivity extends AppCompatActivity {
 
