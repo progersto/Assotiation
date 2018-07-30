@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.natife.assotiation.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class InitGameActivity extends AppCompatActivity implements InitGameContract.View {
 
@@ -44,6 +47,25 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         initView();
 
         recyclerPlayers.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        adapterPlayers = new PlayersAdapter(InitGameActivity.this);
+        recyclerPlayers.setAdapter(adapterPlayers);
+
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                PlayersAdapter adapter = (PlayersAdapter)recyclerPlayers.getAdapter();
+                Objects.requireNonNull(adapter).deleteFromListAdapter(swipedPosition);
+            }
+        };
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerPlayers);
+
         mPresenter.initPlayerList();
     }//onCreate
 
@@ -81,8 +103,7 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
 
     @Override
     public void showListPlayers(List<String> listName, List<Integer> listColor) {
-        adapterPlayers = new PlayersAdapter(InitGameActivity.this, listName, listColor);
-        recyclerPlayers.setAdapter(adapterPlayers);
+        adapterPlayers.setData(listName, listColor);
     }
 
     @Override

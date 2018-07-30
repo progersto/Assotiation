@@ -18,15 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
+    private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
     private LayoutInflater inflater;
-    private List<String> list;
-    private List<Integer> listColor;
+    private List<String> list =new ArrayList<>();
+    private List<Integer> listColor =new ArrayList<>();
     private Context context;
 
-    public PlayersAdapter(Context context, List<String> list, List<Integer> listColor) {
+
+    public PlayersAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.list = new ArrayList<>(list);
-        this.listColor = new ArrayList<>(listColor);
         this.context = context;
     }//AdapterProductList
 
@@ -77,9 +77,16 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     }//onBindViewHolder
 
+    public void setData(List<String> list,  List<Integer> listColor){
+        this.list = list;
+        this.listColor = listColor;
+        notifyDataSetChanged();
+    }
+
     public void deleteFromListAdapter(int pos) {
         list.remove(pos);
         notifyItemRemoved(pos);//updates after removing Item at position
-        notifyItemRangeChanged(pos, list.size());//updates the items of the following items
+//        notifyItemRangeChanged(pos, list.size());//updates the items of the following items
     }//deleteFromListAdapter
+
 }//class AdapterProductList

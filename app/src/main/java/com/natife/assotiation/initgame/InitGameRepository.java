@@ -1,6 +1,7 @@
 package com.natife.assotiation.initgame;
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.natife.assotiation.R;
 
