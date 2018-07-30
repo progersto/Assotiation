@@ -50,7 +50,7 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         adapterPlayers = new PlayersAdapter(InitGameActivity.this);
         recyclerPlayers.setAdapter(adapterPlayers);
 
-        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
