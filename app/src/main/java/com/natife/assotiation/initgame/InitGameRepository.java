@@ -13,7 +13,7 @@ public class InitGameRepository implements InitGameContract.Repository {
     List<String> listName;
 
     @Override
-    public List<String> createListNamePlayers(Resources resources) {
+    public List<String> createListNamePlayers() {
         listName = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             listName.add("");
@@ -28,7 +28,7 @@ public class InitGameRepository implements InitGameContract.Repository {
     }
 
     @Override
-    public List<String> addNamePlayerInList(Resources resources) {
+    public List<String> addNamePlayerInList() {
         listName.add("");
         return listName;
     }

@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,27 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_player, parent, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                list.set(holder.getAdapterPosition(), charSequence.toString());
+                Log.d("ddd", "onTextChanged list = " + list);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        };
+
+        holder.editTextPlayerName.addTextChangedListener(textWatcher);
+
+        return holder;
     } // onCreateViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,27 +88,11 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        if (list.get(position).isEmpty()){
-            holder.editTextPlayerName.setHint(context.getResources().getString(R.string.name_player) + " " + (position + 1));
-        }else {
-            holder.editTextPlayerName.setText(list.get(position));
-        }
-        holder.editTextPlayerName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.d("ddd", "onBindViewHolder list = " + list);
 
-            }
+        holder.editTextPlayerName.setHint(context.getResources().getString(R.string.name_player) + " " + (position + 1));
+        holder.editTextPlayerName.setText(list.get(position));
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                list.set(position, charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         holder.imageColor.setColorFilter(ContextCompat.getColor(context, listColor.get(position)));
 
         View.OnClickListener listener = new View.OnClickListener() {
@@ -99,19 +104,26 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         holder.imageVoice.setOnClickListener(listener);
     }//onBindViewHolder
 
+    @Override
+    public void onViewRecycled(@NonNull ViewHolder holder) {
+
+    }
 
     public void setData(List<String> list, List<Integer> listColor) {
+        Log.d("ddd", "setData this.list = " + this.list);
+        Log.d("ddd", "setData list = " + list);
         this.list = list;
         this.listColor = listColor;
         notifyDataSetChanged();
     }
 
 
-    public void deleteFromListAdapter(int pos) {
-        list.remove(pos);
-//        notifyItemRemoved(pos);//updates after removing Item at position
-        notifyDataSetChanged();
-//        notifyItemRangeChanged(pos, list.size());//updates the items of the following items
+    public void deleteFromListAdapter(int position) {
+            list.remove(position);
+
+            Log.d("ddd", "deleteFromListAdapter list = " + list);
+            notifyItemRemoved(position);//updates after removing Item at position
+            notifyDataSetChanged();
     }//deleteFromListAdapter
 
 }//class AdapterProductList

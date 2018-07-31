@@ -50,7 +50,8 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         adapterPlayers = new PlayersAdapter(InitGameActivity.this);
         recyclerPlayers.setAdapter(adapterPlayers);
 
-        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(
+                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -59,8 +60,15 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                PlayersAdapter adapter = (PlayersAdapter)recyclerPlayers.getAdapter();
-                Objects.requireNonNull(adapter).deleteFromListAdapter(swipedPosition);
+                PlayersAdapter adapter = (PlayersAdapter) recyclerPlayers.getAdapter();
+                if (Objects.requireNonNull(adapter).getItemCount() > 3) {
+                    Objects.requireNonNull(adapter).deleteFromListAdapter(swipedPosition);
+                }
+            }
+
+            @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder holder) {
+                return Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() > 3 ? super.getSwipeDirs(recyclerView, holder) : 0;
             }
         };
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -106,10 +114,6 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         adapterPlayers.setData(listName, listColor);
     }
 
-    @Override
-    public Resources getResourceForListName() {
-       return this.getResources();
-    }
 
     @Override
     public void changeScreen(boolean flagSetName) {

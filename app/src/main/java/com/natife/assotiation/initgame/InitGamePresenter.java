@@ -19,7 +19,7 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
 
     @Override
     public void initPlayerList() {
-        listName = mRepository.createListNamePlayers(mView.getResourceForListName());
+        listName = mRepository.createListNamePlayers();
         listColor = mRepository.createListColor();
         mView.showListPlayers(listName, listColor);
     }
@@ -27,7 +27,7 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
     @Override
     public void btnAddPlayerClicked() {
         if (listName.size() <= 5){
-            listName = mRepository.addNamePlayerInList(mView.getResourceForListName());
+            listName = mRepository.addNamePlayerInList();
             mView.showListPlayers(listName, listColor);
         }
     }

@@ -9,8 +9,6 @@ public interface InitGameContract {
     interface View {
         void showListPlayers(List<String> listName, List<Integer> listColor);
 
-        Resources getResourceForListName();
-
         void changeScreen(boolean flagChange);
     }
 
@@ -29,11 +27,11 @@ public interface InitGameContract {
     }
 
     interface Repository {
-        List<String> createListNamePlayers(Resources resources);
+        List<String> createListNamePlayers();
 
         List<Integer> createListColor();
 
-        List<String> addNamePlayerInList(Resources resources);
+        List<String> addNamePlayerInList();
     }
 
 }
