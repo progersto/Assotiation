@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InitGameRepository implements InitGameContract.Repository {
-    List<String> listName;
+    private List<String> listName;
 
     @Override
     public List<String> createListNamePlayers() {

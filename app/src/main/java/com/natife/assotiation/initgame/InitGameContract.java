@@ -1,6 +1,6 @@
 package com.natife.assotiation.initgame;
 
-import android.content.res.Resources;
+import android.content.Context;
 
 import java.util.List;
 
@@ -10,6 +10,9 @@ public interface InitGameContract {
         void showListPlayers(List<String> listName, List<Integer> listColor);
 
         void changeScreen(boolean flagChange);
+
+        Context contextActivity();
+
     }
 
     interface Presenter {

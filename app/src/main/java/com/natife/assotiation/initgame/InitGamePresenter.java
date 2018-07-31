@@ -1,5 +1,14 @@
 package com.natife.assotiation.initgame;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.view.Window;
+
+import com.natife.assotiation.R;
+
 import java.util.List;
 
 public class InitGamePresenter implements InitGameContract.Presenter  {
@@ -52,7 +61,11 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
 
     @Override
     public void btnSettingsClicked() {
-
+        Dialog dialog = new Dialog(mView.contextActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.inform_dialog);
+        dialog.show();
     }
 
     @Override
