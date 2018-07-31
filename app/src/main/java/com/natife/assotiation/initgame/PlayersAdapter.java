@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,11 +27,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     private List<String> list = new ArrayList<>();
     private List<Integer> listColor = new ArrayList<>();
     private Context context;
+    private OnItemVoiceIconListener OnItemVoiceIconListener;
 
 
-    public PlayersAdapter(Context context) {
+    public PlayersAdapter(Context context, OnItemVoiceIconListener OnItemVoiceIconListener) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        this.OnItemVoiceIconListener = OnItemVoiceIconListener;
     }//AdapterProductList
 
     @Override
@@ -73,7 +76,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout constraint_item_player;
         ImageView imageColor;
-        TextView editTextPlayerName;
+        EditText editTextPlayerName;
         RelativeLayout imageVoice;
 
         private ViewHolder(View view) {
@@ -98,7 +101,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OnItemVoiceIconListener.onItemVoiceIconClick(holder.getAdapterPosition(), v, holder.editTextPlayerName);
             }
         };
         holder.imageVoice.setOnClickListener(listener);

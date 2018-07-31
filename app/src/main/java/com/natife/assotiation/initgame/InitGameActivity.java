@@ -1,24 +1,28 @@
 package com.natife.assotiation.initgame;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.natife.assotiation.R;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 
 public class InitGameActivity extends AppCompatActivity implements InitGameContract.View {
 
@@ -32,6 +36,9 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
     private View viewRadioButton;
     private TextView textSelection;
     private InitGameContract.Presenter mPresenter;
+    private OnItemVoiceIconListener onItemVoiceIconListener;
+    private EditText nameForVoiceTemp;
+    private final int VOICE_RECOGNIZER = 1000;
 
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, InitGameActivity.class));
@@ -48,7 +55,7 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         initView();
 
         recyclerPlayers.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapterPlayers = new PlayersAdapter(InitGameActivity.this);
+        adapterPlayers = new PlayersAdapter(InitGameActivity.this, onItemVoiceIconListener);
         recyclerPlayers.setAdapter(adapterPlayers);
 
         ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(
@@ -113,6 +120,21 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
                 mPresenter.btnSettingsClicked();
             }
         });
+        onItemVoiceIconListener = new OnItemVoiceIconListener() {
+            @Override
+            public void onItemVoiceIconClick(int position, View v, EditText editText) {
+                // call the voice dialing activity
+                nameForVoiceTemp = editText;
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, Locale.getDefault());
+                try {
+                    startActivityForResult(intent, VOICE_RECOGNIZER);
+                } catch (ActivityNotFoundException a) {
+                    Toast.makeText(InitGameActivity.this,
+                            getResources().getString(R.string.error_voice_not_support),Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }//initView
 
 
@@ -135,5 +157,21 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         btnAddPlayer.setVisibility(flagSetName ? View.GONE : View.VISIBLE);
         textBtnNext.setText(flagSetName ? R.string.text_play : R.string.text_next);
         textSelection.setText(flagSetName ? R.string.text_selection_difficulty_level : R.string.text_selection_name);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case VOICE_RECOGNIZER: {
+                // result of voice dialing
+                if (resultCode == Activity.RESULT_OK && null != data) {
+                    String yourResult = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+                    nameForVoiceTemp.setText(yourResult);
+                }
+                break;
+            }
+        }
     }
 }
