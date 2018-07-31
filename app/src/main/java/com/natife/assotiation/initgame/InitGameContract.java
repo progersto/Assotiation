@@ -35,6 +35,8 @@ public interface InitGameContract {
         List<Integer> createListColor();
 
         List<String> addNamePlayerInList();
+
+
     }
 
 }

@@ -2,8 +2,12 @@ package com.natife.assotiation.initgame;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 
@@ -48,8 +52,15 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
             //start to play...
 
         }else {
-            mView.changeScreen(true);
-            flagStartGame = true;
+            if (listName.contains("")){
+              new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
+                      .setMessage(R.string.set_name)
+                      .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
+                      .show();
+            }else {
+                mView.changeScreen(true);
+                flagStartGame = true;
+            }
         }
     }
 

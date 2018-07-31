@@ -96,33 +96,14 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         textBtnNext = findViewById(R.id.textBtnNext);
         viewRadioButton = findViewById(R.id.viewRadioButton);
 
-        btnAddPlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.btnAddPlayerClicked();
-            }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.btnNextClicked();
-            }
-        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.btnBackClicked();
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.btnSettingsClicked();
-            }
-        });
+        btnAddPlayer.setOnClickListener(view -> mPresenter.btnAddPlayerClicked());
+        btnNext.setOnClickListener(view -> mPresenter.btnNextClicked());
+        back.setOnClickListener(view -> mPresenter.btnBackClicked());
+        settings.setOnClickListener(view -> mPresenter.btnSettingsClicked());
+
         onItemVoiceIconListener = new OnItemVoiceIconListener() {
             @Override
-            public void onItemVoiceIconClick(int position, View v, EditText editText) {
+            public void onItemVoiceIconClick(int position, EditText editText) {
                 // call the voice dialing activity
                 nameForVoiceTemp = editText;
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

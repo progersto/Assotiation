@@ -5,6 +5,6 @@ import android.widget.EditText;
 
 public interface OnItemVoiceIconListener {
 
-    void onItemVoiceIconClick(int position, View v, EditText editText);
+    void onItemVoiceIconClick(int position, EditText editText);
 
 }

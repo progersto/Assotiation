@@ -27,13 +27,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     private List<String> list = new ArrayList<>();
     private List<Integer> listColor = new ArrayList<>();
     private Context context;
-    private OnItemVoiceIconListener OnItemVoiceIconListener;
+    private OnItemVoiceIconListener voiceIconListener;
 
 
-    public PlayersAdapter(Context context, OnItemVoiceIconListener OnItemVoiceIconListener) {
+    public PlayersAdapter(Context context, OnItemVoiceIconListener voiceIconListener) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
-        this.OnItemVoiceIconListener = OnItemVoiceIconListener;
+        this.voiceIconListener = voiceIconListener;
     }//AdapterProductList
 
     @Override
@@ -101,7 +101,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnItemVoiceIconListener.onItemVoiceIconClick(holder.getAdapterPosition(), v, holder.editTextPlayerName);
+                voiceIconListener.onItemVoiceIconClick(holder.getAdapterPosition(), holder.editTextPlayerName);
             }
         };
         holder.imageVoice.setOnClickListener(listener);
