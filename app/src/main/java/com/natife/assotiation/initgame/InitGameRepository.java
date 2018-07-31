@@ -32,4 +32,16 @@ public class InitGameRepository implements InitGameContract.Repository {
         listName.add("");
         return listName;
     }
+
+    @Override
+    public List<String> createListWords(int difficultLevel) {
+        Log.d("ddd", "ddd");
+        List<String> list = new ArrayList<>();
+        list.add("d");
+        // создаем список слов из файла в assets...
+
+        return list;
+    }
+
+
 }

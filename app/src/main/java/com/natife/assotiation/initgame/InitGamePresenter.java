@@ -1,14 +1,9 @@
 package com.natife.assotiation.initgame;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.provider.Settings;
-import android.view.View;
+import android.util.Log;
 import android.view.Window;
 
 import com.natife.assotiation.R;
@@ -22,6 +17,7 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
     private List<String> listName;
     private List<Integer> listColor;
     private boolean flagStartGame = false;
+    private List<String> listWords;
 
     //передаем экземпляр View
     public InitGamePresenter(InitGameContract.View mView) {
@@ -45,10 +41,13 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
         }
     }
 
+
     @Override
-    public void btnNextClicked() {
+    public void btnNextClicked(int difficultLevel) {
         if (flagStartGame) {
             flagStartGame = false;
+            listWords = mRepository.createListWords(difficultLevel);
+            Log.d("ddd", "listWords = " + listWords);
             //start to play...
 
         }else {

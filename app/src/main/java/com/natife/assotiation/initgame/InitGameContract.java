@@ -16,11 +16,11 @@ public interface InitGameContract {
     }
 
     interface Presenter {
-        void  initPlayerList();
+        void initPlayerList();
 
         void btnAddPlayerClicked();
 
-        void btnNextClicked();
+        void btnNextClicked(int difficultLevel);
 
         void btnBackClicked();
 
@@ -36,7 +36,7 @@ public interface InitGameContract {
 
         List<String> addNamePlayerInList();
 
-
+        List<String> createListWords(int difficultLevel);
     }
 
 }

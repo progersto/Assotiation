@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,12 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
     private OnItemVoiceIconListener onItemVoiceIconListener;
     private EditText nameForVoiceTemp;
     private final int VOICE_RECOGNIZER = 1000;
+    private RadioButton radio_easy;
+    private RadioButton radio_normal;
+    private RadioButton radio_hard;
+    private final static int LEVEL_EASE = 1;
+    private final static int LEVEL_NORMAL = 2;
+    private final static int LEVEL_HARD = 3;
 
     public static void start(Activity activity) {
         activity.startActivity(new Intent(activity, InitGameActivity.class));
@@ -95,9 +102,12 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         btnNext = findViewById(R.id.buttonNext);
         textBtnNext = findViewById(R.id.textBtnNext);
         viewRadioButton = findViewById(R.id.viewRadioButton);
+        radio_easy = findViewById(R.id.radio_easy);
+        radio_normal = findViewById(R.id.radio_normal);
+        radio_hard = findViewById(R.id.radio_hard);
 
         btnAddPlayer.setOnClickListener(view -> mPresenter.btnAddPlayerClicked());
-        btnNext.setOnClickListener(view -> mPresenter.btnNextClicked());
+        btnNext.setOnClickListener(view -> mPresenter.btnNextClicked(checkDifficultLevel()));
         back.setOnClickListener(view -> mPresenter.btnBackClicked());
         settings.setOnClickListener(view -> mPresenter.btnSettingsClicked());
 
@@ -112,11 +122,19 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
                     startActivityForResult(intent, VOICE_RECOGNIZER);
                 } catch (ActivityNotFoundException a) {
                     Toast.makeText(InitGameActivity.this,
-                            getResources().getString(R.string.error_voice_not_support),Toast.LENGTH_SHORT).show();
+                            getResources().getString(R.string.error_voice_not_support), Toast.LENGTH_SHORT).show();
                 }
             }
         };
     }//initView
+
+    private int checkDifficultLevel() {
+        int levelDifficult = LEVEL_EASE;
+        if (radio_easy.isChecked()) levelDifficult = LEVEL_EASE;
+        if (radio_normal.isChecked()) levelDifficult = LEVEL_NORMAL;
+        if (radio_hard.isChecked()) levelDifficult = LEVEL_HARD;
+        return levelDifficult;
+    }
 
 
     @Override
