@@ -148,6 +148,12 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
     }
 
     @Override
+    public void showSettingsDialog() {
+        DialogSettings dialogSettings = new DialogSettings();
+        dialogSettings.show(getSupportFragmentManager(), "dialogSettings");
+    }
+
+    @Override
     public void changeScreen(boolean flagSetName) {
         recyclerPlayers.setVisibility(flagSetName ? View.GONE : View.VISIBLE);
         viewRadioButton.setVisibility(flagSetName ? View.VISIBLE : View.GONE);

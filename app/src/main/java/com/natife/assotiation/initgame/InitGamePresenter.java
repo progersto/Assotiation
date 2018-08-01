@@ -4,13 +4,15 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.natife.assotiation.R;
 
 import java.util.List;
 
-public class InitGamePresenter implements InitGameContract.Presenter  {
+public class InitGamePresenter implements InitGameContract.Presenter {
     //Компоненты MVP приложения
     private InitGameContract.View mView;
     private InitGameContract.Repository mRepository;
@@ -35,7 +37,7 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
 
     @Override
     public void btnAddPlayerClicked() {
-        if (listName.size() <= 5){
+        if (listName.size() <= 5) {
             listName = mRepository.addNamePlayerInList();
             mView.showListPlayers(listName, listColor);
         }
@@ -50,13 +52,13 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
             Log.d("ddd", "listWords = " + listWords);
             //start to play...
 
-        }else {
-            if (listName.contains("")){
-              new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
-                      .setMessage(R.string.set_name)
-                      .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
-                      .show();
-            }else {
+        } else {
+            if (listName.contains("")) {
+                new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
+                        .setMessage(R.string.set_name)
+                        .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
+                        .show();
+            } else {
                 mView.changeScreen(true);
                 flagStartGame = true;
             }
@@ -75,11 +77,11 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (flagStartGame) {
-            dialog.setContentView(R.layout.inform_dialog);
-        }else {
-
+            mView.showSettingsDialog();
+        } else {
+            dialog.setContentView(R.layout.dialog_inform);
+            dialog.show();
         }
-        dialog.show();
     }
 
     @Override

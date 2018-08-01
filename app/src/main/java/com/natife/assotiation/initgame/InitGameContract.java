@@ -13,6 +13,8 @@ public interface InitGameContract {
 
         Context contextActivity();
 
+        void showSettingsDialog();
+
     }
 
     interface Presenter {
