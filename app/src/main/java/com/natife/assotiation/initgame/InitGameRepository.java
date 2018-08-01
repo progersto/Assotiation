@@ -1,7 +1,6 @@
 package com.natife.assotiation.initgame;
 
-import android.content.res.Resources;
-import android.util.Log;
+import android.content.Context;
 
 import com.natife.assotiation.R;
 
@@ -9,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.natife.assotiation.utils.ListGenerator.createListSelectedLevel;
+
 public class InitGameRepository implements InitGameContract.Repository {
     private List<String> listName;
+
 
     @Override
     public List<String> createListNamePlayers() {
@@ -33,15 +35,10 @@ public class InitGameRepository implements InitGameContract.Repository {
         return listName;
     }
 
+
     @Override
-    public List<String> createListWords(int difficultLevel) {
-        Log.d("ddd", "ddd");
-        List<String> list = new ArrayList<>();
-        list.add("d");
-        // создаем список слов из файла в assets...
-
-        return list;
+    public List<String> createListWords(int difficultLevel, Context context) {
+        // создаем список слов выбранной сложности из файла в assets...
+        return createListSelectedLevel(context, difficultLevel);
     }
-
-
 }

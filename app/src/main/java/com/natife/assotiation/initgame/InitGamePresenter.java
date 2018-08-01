@@ -46,7 +46,7 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
     public void btnNextClicked(int difficultLevel) {
         if (flagStartGame) {
             flagStartGame = false;
-            listWords = mRepository.createListWords(difficultLevel);
+            listWords = mRepository.createListWords(difficultLevel, mView.contextActivity());
             Log.d("ddd", "listWords = " + listWords);
             //start to play...
 
@@ -74,7 +74,11 @@ public class InitGamePresenter implements InitGameContract.Presenter  {
         Dialog dialog = new Dialog(mView.contextActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.inform_dialog);
+        if (flagStartGame) {
+            dialog.setContentView(R.layout.inform_dialog);
+        }else {
+
+        }
         dialog.show();
     }
 
