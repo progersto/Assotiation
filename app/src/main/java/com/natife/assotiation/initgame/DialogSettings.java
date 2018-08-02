@@ -1,14 +1,11 @@
 package com.natife.assotiation.initgame;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,26 +48,47 @@ public class DialogSettings extends DialogFragment {
             preferUtil.saveTimeMove(v.getContext(), timeMove);
             preferUtil.saveTimeGame(v.getContext(), timeGame);
             preferUtil.saveNumberCircles(v.getContext(), numberCircles);
+        }else {
+            timeMoveTV.setText(String.valueOf(timeMove));
+            timeGameTV.setText(String.valueOf(timeGame));
+            numberCirclesTV.setText(String.valueOf(numberCircles));
         }
 
         v.findViewById(R.id.time_move_minus).setOnClickListener(view -> {
-            if (timeMove != 15) timeMove -= 15;
+            if (timeMove != 15) {
+                timeMove -= 15;
+                timeMoveTV.setText(String.valueOf(timeMove));
+            }
         });
         v.findViewById(R.id.time_move_plus).setOnClickListener(view -> {
-            if (timeMove != 300) timeMove += 15;
+            if (timeMove != 300) {
+                timeMove += 15;
+                timeMoveTV.setText(String.valueOf(timeMove));
+            }
         });
         v.findViewById(R.id.time_game_minus).setOnClickListener(view -> {
-            if (timeGame != 15) timeGame -= 1;
+            if (timeGame != 15) {
+                timeGame -= 1;
+                timeGameTV.setText(String.valueOf(timeGame));
+            }
         });
         v.findViewById(R.id.time_game_plus).setOnClickListener(view -> {
-            if (timeGame != 90) timeGame += 1;
+            if (timeGame != 90) {
+                timeGame += 1;
+                timeGameTV.setText(String.valueOf(timeGame));
+            }
         });
         v.findViewById(R.id.number_of_circles_plus).setOnClickListener(view -> {
-            if (numberCircles != 50) numberCircles += 1;
+            if (numberCircles != 50) {
+                numberCircles += 1;
+                numberCirclesTV.setText(String.valueOf(numberCircles));
+            }
         });
         v.findViewById(R.id.number_of_circles_minus).setOnClickListener(view -> {
-            if (numberCircles != 1) numberCircles -= 1;
-
+            if (numberCircles != 1) {
+                numberCircles -= 1;
+                numberCirclesTV.setText(String.valueOf(numberCircles));
+            }
         });
 
         v.findViewById(R.id.buttonSave).setOnClickListener(view -> {

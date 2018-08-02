@@ -13,7 +13,7 @@ public interface InitGameContract {
 
         Context contextActivity();
 
-        void showSettingsDialog();
+        void showSettingsDialog(boolean flagStartGame);
 
     }
 

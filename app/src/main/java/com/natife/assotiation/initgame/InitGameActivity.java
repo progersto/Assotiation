@@ -1,9 +1,12 @@
 package com.natife.assotiation.initgame;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -13,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -148,9 +152,17 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
     }
 
     @Override
-    public void showSettingsDialog() {
-        DialogSettings dialogSettings = new DialogSettings();
-        dialogSettings.show(getSupportFragmentManager(), "dialogSettings");
+    public void showSettingsDialog(boolean flagStartGame) {
+        if (flagStartGame) {
+            DialogSettings dialogSettings = new DialogSettings();
+            dialogSettings.show(getSupportFragmentManager(), "dialogSettings");
+        }else {
+            Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_inform);
+            dialog.show();
+        }
     }
 
     @Override

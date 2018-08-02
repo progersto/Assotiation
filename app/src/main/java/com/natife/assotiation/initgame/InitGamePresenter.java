@@ -77,7 +77,7 @@ public class InitGamePresenter implements InitGameContract.Presenter {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (flagStartGame) {
-            mView.showSettingsDialog();
+            mView.showSettingsDialog(flagStartGame);
         } else {
             dialog.setContentView(R.layout.dialog_inform);
             dialog.show();
