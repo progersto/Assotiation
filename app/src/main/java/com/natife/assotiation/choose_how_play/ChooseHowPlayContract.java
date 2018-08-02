@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-public class ChooseHowPlayContract {
+public interface ChooseHowPlayContract {
 
     interface View {
 
@@ -12,13 +12,25 @@ public class ChooseHowPlayContract {
 
         void showResultDialog();
 
+        void showData(String name, Integer color, String word1, String word2);
+
     }
 
     interface Presenter {
 
-        void initPlayerList();
+        void word1Pressed(String word);
 
-        void btnAddPlayerClicked();
+        void word2Pressed(String word);
+
+        void layoutShow_Pressed();
+
+        void layoutTell_Pressed();
+
+        void layoutDraw_Pressed();
+
+        void buttonGo();
+
+        void findDataForFillFields(List<String> listName, List<Integer> listColor, List<String> listWords);
 
     }
 
