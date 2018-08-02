@@ -1,6 +1,7 @@
 package com.natife.assotiation.initgame;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -9,7 +10,9 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.choose_how_play.ChooseHowPlayActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InitGamePresenter implements InitGameContract.Presenter {
@@ -50,7 +53,13 @@ public class InitGamePresenter implements InitGameContract.Presenter {
             flagStartGame = false;
             listWords = mRepository.createListWords(difficultLevel, mView.contextActivity());
             Log.d("ddd", "listWords = " + listWords);
+
             //start to play...
+            Intent intent = new Intent(mView.contextActivity(), ChooseHowPlayActivity.class);
+            intent.putStringArrayListExtra("listWords", (ArrayList<String>) listWords);
+            intent.putIntegerArrayListExtra("listColor", (ArrayList<Integer>) listColor);
+            intent.putStringArrayListExtra("listName", (ArrayList<String>) listName);
+            mView.contextActivity().startActivity(intent);
 
         } else {
             if (listName.contains("")) {
