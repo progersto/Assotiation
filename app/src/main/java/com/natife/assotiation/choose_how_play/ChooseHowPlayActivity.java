@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     private FrameLayout layoutShow;
     private FrameLayout layoutTell;
     private FrameLayout layoutDraw;
+    private FrameLayout frameShowWords;
     private ImageView iconShow;
     private ImageView iconTell;
     private ImageView iconDraw;
@@ -68,6 +70,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         layoutShow = findViewById(R.id.layout_show);
         layoutTell = findViewById(R.id.layout_tell);
         layoutDraw = findViewById(R.id.layout_draw);
+        frameShowWords = findViewById(R.id.frame_show_words);
         iconShow = findViewById(R.id.iconShow);
         iconTell = findViewById(R.id.iconTell);
         iconDraw = findViewById(R.id.icon_draw);
@@ -75,6 +78,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         textShow = findViewById(R.id.text_show);
         textTell = findViewById(R.id.text_tell);
         buttonGo = findViewById(R.id.buttonGo);
+        frameShowWords.setOnClickListener(view -> {
+            frameShowWords.setVisibility(View.GONE);
+            frameWord1.setVisibility(View.VISIBLE);
+            frameWord2.setVisibility(View.VISIBLE);
+        });
         word1.setOnClickListener(view -> {
             mPresenter.word1Pressed(word1.getText().toString());
             word1.setTextColor(ContextCompat.getColor(this, colorPlayer));
