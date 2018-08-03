@@ -49,42 +49,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/whose_turn" />
 
-    <TextView
-        android:id="@+id/word1"
-        style="@style/RecyclerTheme"
+    <FrameLayout
+        android:id="@+id/frame_word1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:text="@string/turn"
-        android:textColor="@color/colorTextSelextion"
-        android:textSize="18sp"
+        android:foreground="@drawable/action_and_word"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSelection" />
+        app:layout_constraintTop_toBottomOf="@+id/textSelection">
 
-    <TextView
-        android:id="@+id/word2"
-        style="@style/RecyclerTheme"
+        <TextView
+            android:id="@+id/word1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:text="@string/turn"
+            android:textColor="@color/colorTextSelextion"
+            android:textSize="18sp" />
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frame_word2"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:text="@string/turn"
-        android:textColor="@color/colorTextSelextion"
-        android:textSize="18sp"
+        android:foreground="@drawable/action_and_word"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/word1" />
+        app:layout_constraintTop_toBottomOf="@+id/frame_word1">
 
+        <TextView
+            android:id="@+id/word2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:text="@string/turn"
+            android:textColor="@color/colorTextSelextion"
+            android:textSize="18sp" />
+    </FrameLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout6"
@@ -96,13 +109,13 @@
         android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/word2">
+        app:layout_constraintTop_toBottomOf="@+id/frame_word2">
 
         <FrameLayout
             android:id="@+id/layout_show"
-            style="@style/RecyclerTheme"
             android:layout_width="0dp"
             android:layout_height="150dp"
+            android:foreground="@drawable/action_and_word"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/layout_tell"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -135,11 +148,11 @@
 
         <FrameLayout
             android:id="@+id/layout_tell"
-            style="@style/RecyclerTheme"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:foreground="@drawable/action_and_word"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/layout_draw"
             app:layout_constraintStart_toEndOf="@+id/layout_show"
@@ -171,9 +184,9 @@
 
         <FrameLayout
             android:id="@+id/layout_draw"
-            style="@style/RecyclerTheme"
             android:layout_width="0dp"
             android:layout_height="150dp"
+            android:foreground="@drawable/action_and_word"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layout_tell"

@@ -1,20 +1,17 @@
 package com.natife.assotiation.choose_how_play;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.natife.assotiation.R;
-import com.natife.assotiation.initgame.InitGamePresenter;
 
 import java.util.List;
 
@@ -27,6 +24,8 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     private TextView whoseTurn;
     private ImageView results;
     private TextView textSelection;
+    private FrameLayout frame_word1;
+    private FrameLayout frame_word2;
     private TextView word1;
     private TextView word2;
     private FrameLayout layout_show;
@@ -62,6 +61,8 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         whoseTurn = findViewById(R.id.whose_turn);
         results = findViewById(R.id.results);
         textSelection = findViewById(R.id.textSelection);
+        frame_word1 = findViewById(R.id.frame_word1);
+        frame_word2 = findViewById(R.id.frame_word2);
         word1 = findViewById(R.id.word1);
         word2 = findViewById(R.id.word2);
         layout_show = findViewById(R.id.layout_show);
@@ -78,11 +79,19 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             mPresenter.word1Pressed(word1.getText().toString());
             word1.setTextColor(getResources().getColor(colorPlayer));
             word2.setTextColor(getResources().getColor(R.color.colorTextSelextion));
+            frame_word1.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            frame_word2.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            GradientDrawable gd = (GradientDrawable)frame_word1.getForeground();
+            gd.setStroke(1, getResources().getColor(colorPlayer));
         });
         word2.setOnClickListener(view -> {
             mPresenter.word1Pressed(word1.getText().toString());
             word2.setTextColor(getResources().getColor(colorPlayer));
             word1.setTextColor(getResources().getColor(R.color.colorTextSelextion));
+            frame_word2.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            frame_word1.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            GradientDrawable gd = (GradientDrawable)frame_word2.getForeground();
+            gd.setStroke(1, getResources().getColor(colorPlayer));
         });
         layout_show.setOnClickListener(view -> {
             mPresenter.layoutShow_Pressed();
@@ -92,8 +101,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconShow.setColorFilter(ContextCompat.getColor(this, colorPlayer));
-
-//            layout_show.setForeground(new ColorDrawable(getResources().getColor( R.color.colorPressed2)));
+            layout_show.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            layout_tell.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            layout_draw.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            GradientDrawable gd = (GradientDrawable)layout_show.getForeground();
+            gd.setStroke(1, getResources().getColor(colorPlayer));
         });
         layout_tell.setOnClickListener(view -> {
             mPresenter.layoutTell_Pressed();
@@ -103,16 +115,29 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconTell.setColorFilter(ContextCompat.getColor(this, colorPlayer));
             iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            layout_show.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            layout_tell.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            layout_draw.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            GradientDrawable gd = (GradientDrawable)layout_tell.getForeground();
+            gd.setStroke(1, getResources().getColor(colorPlayer));
         });
         layout_draw.setOnClickListener(view -> {
             mPresenter.layoutDraw_Pressed();
+            //color text
             text_show.setTextColor(getResources().getColor(R.color.colorTextSelextion));
             text_tell.setTextColor(getResources().getColor(R.color.colorTextSelextion));
             text_draw.setTextColor(getResources().getColor(colorPlayer));
+            //color icon
             iconDraw.setColorFilter(ContextCompat.getColor(this, colorPlayer));
             iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
-
+            //background
+            layout_show.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            layout_tell.setForeground(getResources().getDrawable(R.drawable.action_and_word));
+            layout_draw.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            //change color frame
+            GradientDrawable gd = (GradientDrawable)layout_draw.getForeground();
+            gd.setStroke(1, getResources().getColor(colorPlayer));
         });
         buttonGo.setOnClickListener(view -> {mPresenter.buttonGo(); });
     }
