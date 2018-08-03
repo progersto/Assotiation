@@ -27,10 +27,14 @@ public interface ChooseHowPlayContract {
         void layoutTell_Pressed();
 
         void layoutDraw_Pressed();
+        void resultPressed();
 
         void buttonGo();
 
         void findDataForFillFields(List<String> listName, List<Integer> listColor, List<String> listWords);
+
+
+
 
     }
 

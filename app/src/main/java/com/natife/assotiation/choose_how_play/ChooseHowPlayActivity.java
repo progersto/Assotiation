@@ -3,6 +3,7 @@ package com.natife.assotiation.choose_how_play;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.initgame.DialogSettings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHowPlayContract.View {
@@ -78,6 +81,10 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         textShow = findViewById(R.id.text_show);
         textTell = findViewById(R.id.text_tell);
         buttonGo = findViewById(R.id.buttonGo);
+
+        results.setOnClickListener(view -> {
+            mPresenter.resultPressed();
+        });
         frameShowWords.setOnClickListener(view -> {
             frameShowWords.setVisibility(View.GONE);
             frameWord1.setVisibility(View.VISIBLE);
@@ -159,7 +166,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
     @Override
     public void showResultDialog() {
-
+        DialogResult dialogResult = new DialogResult();
+        Bundle args = new Bundle();
+        args.putStringArrayList("listName", (ArrayList<String>) listName);
+        dialogResult.setArguments(args);
+        dialogResult.show(getSupportFragmentManager(), "dialogResult");
     }
 
     @Override

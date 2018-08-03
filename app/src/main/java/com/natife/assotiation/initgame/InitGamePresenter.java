@@ -32,8 +32,8 @@ public class InitGamePresenter implements InitGameContract.Presenter {
 
 
     @Override
-    public void initPlayerList() {
-        listName = mRepository.createListNamePlayers();
+    public void initPlayerList(List<String> listWithName) {
+        listName = mRepository.createListNamePlayers(listWithName);
         listColor = mRepository.createListColor();
         mView.showListPlayers(listName, listColor);
     }

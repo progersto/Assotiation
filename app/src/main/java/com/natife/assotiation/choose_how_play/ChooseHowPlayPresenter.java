@@ -63,6 +63,11 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     }
 
     @Override
+    public void resultPressed() {
+        mView.showResultDialog();
+    }
+
+    @Override
     public void buttonGo() {
 
     }

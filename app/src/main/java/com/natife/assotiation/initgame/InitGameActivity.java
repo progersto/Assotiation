@@ -93,7 +93,8 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerPlayers);
 
-        mPresenter.initPlayerList();
+        List<String> listName = getIntent().getStringArrayListExtra("listName");
+        mPresenter.initPlayerList(listName);
     }//onCreate
 
 
@@ -156,7 +157,7 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         if (flagStartGame) {
             DialogSettings dialogSettings = new DialogSettings();
             dialogSettings.show(getSupportFragmentManager(), "dialogSettings");
-        }else {
+        } else {
             Dialog dialog = new Dialog(this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

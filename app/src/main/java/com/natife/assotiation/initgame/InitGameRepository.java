@@ -15,10 +15,14 @@ public class InitGameRepository implements InitGameContract.Repository {
 
 
     @Override
-    public List<String> createListNamePlayers() {
+    public List<String> createListNamePlayers(List<String> listWithName) {
         listName = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            listName.add("");
+        if (listWithName == null) {
+            for (int i = 0; i < 3; i++) {
+                listName.add("");
+            }
+        } else {
+            listName.addAll(listWithName);
         }
         return listName;
     }

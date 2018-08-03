@@ -18,7 +18,7 @@ public interface InitGameContract {
     }
 
     interface Presenter {
-        void initPlayerList();
+        void initPlayerList(List<String>listName);
 
         void btnAddPlayerClicked();
 
@@ -32,7 +32,7 @@ public interface InitGameContract {
     }
 
     interface Repository {
-        List<String> createListNamePlayers();
+        List<String> createListNamePlayers(List<String> listWithName);
 
         List<Integer> createListColor();
 
