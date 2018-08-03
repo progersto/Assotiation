@@ -24,19 +24,19 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     private TextView whoseTurn;
     private ImageView results;
     private TextView textSelection;
-    private FrameLayout frame_word1;
-    private FrameLayout frame_word2;
+    private FrameLayout frameWord1;
+    private FrameLayout frameWord2;
     private TextView word1;
     private TextView word2;
-    private FrameLayout layout_show;
-    private FrameLayout layout_tell;
-    private FrameLayout layout_draw;
+    private FrameLayout layoutShow;
+    private FrameLayout layoutTell;
+    private FrameLayout layoutDraw;
     private ImageView iconShow;
     private ImageView iconTell;
     private ImageView iconDraw;
-    private TextView text_draw;
-    private TextView text_show;
-    private TextView text_tell;
+    private TextView textDraw;
+    private TextView textShow;
+    private TextView textTell;
     private RelativeLayout buttonGo;
     private int colorPlayer = 0;
 
@@ -61,83 +61,83 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         whoseTurn = findViewById(R.id.whose_turn);
         results = findViewById(R.id.results);
         textSelection = findViewById(R.id.textSelection);
-        frame_word1 = findViewById(R.id.frame_word1);
-        frame_word2 = findViewById(R.id.frame_word2);
+        frameWord1 = findViewById(R.id.frame_word1);
+        frameWord2 = findViewById(R.id.frame_word2);
         word1 = findViewById(R.id.word1);
         word2 = findViewById(R.id.word2);
-        layout_show = findViewById(R.id.layout_show);
-        layout_tell = findViewById(R.id.layout_tell);
-        layout_draw = findViewById(R.id.layout_draw);
+        layoutShow = findViewById(R.id.layout_show);
+        layoutTell = findViewById(R.id.layout_tell);
+        layoutDraw = findViewById(R.id.layout_draw);
         iconShow = findViewById(R.id.iconShow);
         iconTell = findViewById(R.id.iconTell);
         iconDraw = findViewById(R.id.icon_draw);
-        text_draw = findViewById(R.id.text_draw);
-        text_show = findViewById(R.id.text_show);
-        text_tell = findViewById(R.id.text_tell);
+        textDraw = findViewById(R.id.text_draw);
+        textShow = findViewById(R.id.text_show);
+        textTell = findViewById(R.id.text_tell);
         buttonGo = findViewById(R.id.buttonGo);
         word1.setOnClickListener(view -> {
             mPresenter.word1Pressed(word1.getText().toString());
-            word1.setTextColor(getResources().getColor(colorPlayer));
-            word2.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            frame_word1.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
-            frame_word2.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            GradientDrawable gd = (GradientDrawable)frame_word1.getForeground();
-            gd.setStroke(1, getResources().getColor(colorPlayer));
+            word1.setTextColor(ContextCompat.getColor(this, colorPlayer));
+            word2.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
+            frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            GradientDrawable gd = (GradientDrawable) frameWord1.getForeground();
+            gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
         word2.setOnClickListener(view -> {
             mPresenter.word1Pressed(word1.getText().toString());
-            word2.setTextColor(getResources().getColor(colorPlayer));
-            word1.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            frame_word2.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
-            frame_word1.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            GradientDrawable gd = (GradientDrawable)frame_word2.getForeground();
-            gd.setStroke(1, getResources().getColor(colorPlayer));
+            word2.setTextColor(ContextCompat.getColor(this, colorPlayer));
+            word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
+            frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            GradientDrawable gd = (GradientDrawable) frameWord2.getForeground();
+            gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
-        layout_show.setOnClickListener(view -> {
+        layoutShow.setOnClickListener(view -> {
             mPresenter.layoutShow_Pressed();
-            text_show.setTextColor(getResources().getColor(colorPlayer));
-            text_tell.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            text_draw.setTextColor(getResources().getColor(R.color.colorTextSelextion));
+            textShow.setTextColor(ContextCompat.getColor(this, colorPlayer));
+            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconShow.setColorFilter(ContextCompat.getColor(this, colorPlayer));
-            layout_show.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
-            layout_tell.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            layout_draw.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            GradientDrawable gd = (GradientDrawable)layout_show.getForeground();
-            gd.setStroke(1, getResources().getColor(colorPlayer));
+            layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
+            layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            layoutDraw.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            GradientDrawable gd = (GradientDrawable) layoutShow.getForeground();
+            gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
-        layout_tell.setOnClickListener(view -> {
+        layoutTell.setOnClickListener(view -> {
             mPresenter.layoutTell_Pressed();
-            text_show.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            text_tell.setTextColor(getResources().getColor(colorPlayer));
-            text_draw.setTextColor(getResources().getColor(R.color.colorTextSelextion));
+            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textTell.setTextColor(ContextCompat.getColor(this, colorPlayer));
+            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconTell.setColorFilter(ContextCompat.getColor(this, colorPlayer));
             iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            layout_show.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            layout_tell.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
-            layout_draw.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            GradientDrawable gd = (GradientDrawable)layout_tell.getForeground();
-            gd.setStroke(1, getResources().getColor(colorPlayer));
+            layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
+            layoutDraw.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            GradientDrawable gd = (GradientDrawable) layoutTell.getForeground();
+            gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
-        layout_draw.setOnClickListener(view -> {
+        layoutDraw.setOnClickListener(view -> {
             mPresenter.layoutDraw_Pressed();
             //color text
-            text_show.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            text_tell.setTextColor(getResources().getColor(R.color.colorTextSelextion));
-            text_draw.setTextColor(getResources().getColor(colorPlayer));
+            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textDraw.setTextColor(ContextCompat.getColor(this, colorPlayer));
             //color icon
             iconDraw.setColorFilter(ContextCompat.getColor(this, colorPlayer));
             iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
             //background
-            layout_show.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            layout_tell.setForeground(getResources().getDrawable(R.drawable.action_and_word));
-            layout_draw.setForeground(getResources().getDrawable(R.drawable.selected_action_and_word));
+            layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+            layoutDraw.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
             //change color frame
-            GradientDrawable gd = (GradientDrawable)layout_draw.getForeground();
-            gd.setStroke(1, getResources().getColor(colorPlayer));
+            GradientDrawable gd = (GradientDrawable) layoutDraw.getForeground();
+            gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
         buttonGo.setOnClickListener(view -> {mPresenter.buttonGo(); });
     }
@@ -157,7 +157,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     @Override
     public void showData(String name, Integer color, String wordOne, String wordTwo) {
         whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.turn), name));
-        whoseTurn.setTextColor(getResources().getColor(color));
+        whoseTurn.setTextColor(ContextCompat.getColor(this, color));
         word1.setText(wordOne);
         word2.setText(wordTwo);
         colorPlayer = color;
