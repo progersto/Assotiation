@@ -3,7 +3,6 @@ package com.natife.assotiation.choose_how_play;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.natife.assotiation.R;
-import com.natife.assotiation.initgame.DialogSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,16 +91,16 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         word1.setOnClickListener(view -> {
             mPresenter.word1Pressed(word1.getText().toString());
             word1.setTextColor(ContextCompat.getColor(this, colorPlayer));
-            word2.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            word2.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
             frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
             GradientDrawable gd = (GradientDrawable) frameWord1.getForeground();
             gd.setStroke(1, ContextCompat.getColor(this, colorPlayer));
         });
         word2.setOnClickListener(view -> {
-            mPresenter.word1Pressed(word1.getText().toString());
+            mPresenter.word1Pressed(word2.getText().toString());
             word2.setTextColor(ContextCompat.getColor(this, colorPlayer));
-            word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
             frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
             GradientDrawable gd = (GradientDrawable) frameWord2.getForeground();
@@ -111,10 +109,10 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         layoutShow.setOnClickListener(view -> {
             mPresenter.layoutShow_Pressed();
             textShow.setTextColor(ContextCompat.getColor(this, colorPlayer));
-            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+            iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
+            iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
             iconShow.setColorFilter(ContextCompat.getColor(this, colorPlayer));
             layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
             layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
@@ -124,12 +122,12 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         layoutTell.setOnClickListener(view -> {
             mPresenter.layoutTell_Pressed();
-            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             textTell.setTextColor(ContextCompat.getColor(this, colorPlayer));
-            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+            iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
             iconTell.setColorFilter(ContextCompat.getColor(this, colorPlayer));
-            iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
             layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
             layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
             layoutDraw.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
@@ -139,13 +137,13 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         layoutDraw.setOnClickListener(view -> {
             mPresenter.layoutDraw_Pressed();
             //color text
-            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+            textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             textDraw.setTextColor(ContextCompat.getColor(this, colorPlayer));
             //color icon
             iconDraw.setColorFilter(ContextCompat.getColor(this, colorPlayer));
-            iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
-            iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelextion));
+            iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
+            iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
             //background
             layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
             layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));

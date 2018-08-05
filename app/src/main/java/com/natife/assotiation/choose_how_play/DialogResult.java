@@ -67,8 +67,6 @@ public class DialogResult extends DialogFragment {
             nameResult.setText(name);
             layoutResult.addView(newItem);
         }
-
-
         return v;
     }
 
