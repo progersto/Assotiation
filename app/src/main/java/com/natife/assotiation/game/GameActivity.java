@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.choose_how_play.UtilForDraw.PaintView;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +41,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private LinearLayout layoutBtnPlayer;
     private CountDownTimer mCountDownTimer;
     private String word;
+    private PaintView paintView;
+    private RelativeLayout buttonAction;
+    private RelativeLayout buttonPointBrush;
+    private boolean flagShowBtn;
+    private RelativeLayout layoutForDraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +86,30 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     private void selectedDraw() {
+        flagShowBtn = false;
+        layoutForDraw.setVisibility(View.VISIBLE);
+        layoutBtnFromTellAndShow.setVisibility(View.GONE);
+        textTimerDraw.setVisibility(View.VISIBLE);
+        drawClear.setVisibility(View.VISIBLE);
+        initTimer(textTimerDraw);
 
+        paintView = findViewById(R.id.paintView);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        paintView.init(metrics);
+        paintView.normal();
+//        paintView.emboss();//чеканка
+//        paintView.blur();//пятно
     }
 
     private void selectedTellOrShow() {
-        initTimer();
+        flagShowBtn = true;
+        timer.setVisibility(View.VISIBLE);
+        layoutBtnFromTellAndShow.setVisibility(View.VISIBLE);
+        initTimer(textTimer);
     }
 
-    private void initTimer() {
+    private void initTimer(TextView textTimer) {
         mCountDownTimer = new CountDownTimer(61 * 1000, 1000) {
 
             @Override
@@ -115,6 +139,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         textTimerDraw = findViewById(R.id.text_timer_draw);
         whoseTurn = findViewById(R.id.whose_turn);
         drawClear = findViewById(R.id.draw_clear);
+        drawClear.setOnClickListener(view -> paintView.clear());
         timer = findViewById(R.id.timer);
         circularProgressbar = findViewById(R.id.circularProgressbar);
         textTimer = findViewById(R.id.text_timer);
@@ -122,12 +147,19 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         theyGuessed = findViewById(R.id.they_guessed);
         theyNotGuessed = findViewById(R.id.they_not_guessed);
         remindWord = findViewById(R.id.remind_word);
+        layoutBtnPlayer = findViewById(R.id.layout_btn_player);
+        buttonAction = findViewById(R.id.buttonAction);
+        layoutForDraw = findViewById(R.id.layout_for_draw);
+        buttonPointBrush = findViewById(R.id.buttonPointBrush);
+        buttonAction.setOnClickListener(view -> layoutBtnFromTellAndShow.setVisibility(View.VISIBLE));
         remindWord.setOnClickListener(view -> {
             Toast toast = Toast.makeText(this, word, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER,0,0);
             toast.show();
+            if (!flagShowBtn){
+                layoutBtnFromTellAndShow.setVisibility(View.GONE);
+            }
         });
-        layoutBtnPlayer = findViewById(R.id.layout_btn_player);
 
     }
 
