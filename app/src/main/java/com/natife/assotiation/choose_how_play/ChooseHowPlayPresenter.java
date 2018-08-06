@@ -1,6 +1,7 @@
 package com.natife.assotiation.choose_how_play;
 
 import android.content.Intent;
+import android.os.Parcelable;
 
 import com.natife.assotiation.game.GameActivity;
 import com.natife.assotiation.initgame.Player;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
+public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
     private ChooseHowPlayContract.View mView;
     private ChooseHowPlayContract.Repository mRepository;
     private List<Player> playerList = new ArrayList<>();
@@ -20,6 +21,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     private String name;
     private int colorPlayer = 0;
     private String word;
+    private int positionPlayer;
 
     //передаем экземпляр View
     public ChooseHowPlayPresenter(ChooseHowPlayContract.View mView) {
@@ -31,7 +33,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     public void findDataForFillFields(List<Player> playerList,  List<String> listWords) {
         this.playerList = playerList;
         this.listWords = listWords;
-        int positionPlayer = getRandom(playerList.size());
+        positionPlayer = getRandom(playerList.size());
         positionWord1 = getRandom(listWords.size());
         positionWord2 = getRandom(listWords.size());
         String word1 = listWords.get(positionWord1);
@@ -79,8 +81,8 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     @Override
     public void buttonGo() {
         intent.putStringArrayListExtra("listWords", (ArrayList<String>) listWords);
-        intent.putExtra("colorPlayer", colorPlayer);
-        intent.putExtra("name", name);
+        intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
+        intent.putExtra("positionPlayer", positionPlayer);
         intent.putExtra("word", word);
         mView.contextActivity().startActivity(intent);
     }

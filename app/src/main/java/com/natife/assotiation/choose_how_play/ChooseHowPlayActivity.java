@@ -63,6 +63,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         mPresenter.findDataForFillFields(playerList, listWords);
     }
 
+
     private void initViews() {
         whoseTurn = findViewById(R.id.whose_turn);
         results = findViewById(R.id.results);
@@ -192,6 +193,31 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         word1.setText(wordOne);
         word2.setText(wordTwo);
         colorPlayer = color;
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        List<Player> ddd= playerList;
+        frameShowWords.setVisibility(View.VISIBLE);
+        frameWord1.setVisibility(View.GONE);
+        frameWord2.setVisibility(View.GONE);
+        word2.setTextColor(ContextCompat.getColor(this,  R.color.colorTextSelection));
+        word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+        frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+        frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+        layoutShow.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+        layoutTell.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+        layoutDraw.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
+        iconDraw.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
+        iconTell.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
+        iconShow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextSelection));
+        textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+        textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+        textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+        mPresenter.findDataForFillFields(playerList, listWords);
     }
 
 

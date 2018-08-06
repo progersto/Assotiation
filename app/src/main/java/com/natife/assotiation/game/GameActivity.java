@@ -1,13 +1,13 @@
 package com.natife.assotiation.game;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,15 +17,12 @@ import android.widget.Toast;
 
 import com.natife.assotiation.R;
 import com.natife.assotiation.game.UtilForDraw.PaintView;
+import com.natife.assotiation.initgame.Player;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View {
     private GameContract.Presenter mPresenter;
-    private String name;
-    private int colorPlayer;
     private List<String> listWords;
     private String howExplain;
     private TextView textTimerDraw;
@@ -39,13 +36,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private RelativeLayout theyNotGuessed;
     private RelativeLayout remindWord;
     private LinearLayout layoutBtnPlayer;
-    private CountDownTimer mCountDownTimer;
     private String word;
     private PaintView paintView;
     private RelativeLayout buttonAction;
     private RelativeLayout buttonPointBrush;
     private boolean flagShowBtn;
     private RelativeLayout layoutForDraw;
+    private int positionPlayer;
+    private List<Player> playerList;
+    private boolean timerBig;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +53,14 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         setContentView(R.layout.activity_game);
 
         howExplain = getIntent().getStringExtra("how_explain");
-        name = getIntent().getStringExtra("name");
-        colorPlayer = getIntent().getIntExtra("colorPlayer", 0);
+        positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
+        playerList = getIntent().getParcelableArrayListExtra("playerList");
         listWords = getIntent().getStringArrayListExtra("listWords");
-        word =  getIntent().getStringExtra("word");
+        word = getIntent().getStringExtra("word");
         initView();
+
+        //Создаём Presenter и в аргументе передаём ему this - эта Activity расширяет интерфейс GameContract.View
+        mPresenter = new GamePresenter(this);
     }
 
     @Override
@@ -68,18 +71,18 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     private void showView(String howExplain) {
 
-        whoseTurn.setTextColor(ContextCompat.getColor(this, colorPlayer));
+        whoseTurn.setTextColor(ContextCompat.getColor(this, playerList.get(positionPlayer).getColor()));
         switch (howExplain) {
             case "tell":
-                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.describes), name));
+                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.describes), playerList.get(positionPlayer).getName()));
                 selectedTellOrShow();
                 break;
             case "show":
-                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.shows), name));
+                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.shows), playerList.get(positionPlayer).getName()));
                 selectedTellOrShow();
                 break;
             case "draw":
-                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.draws), name));
+                whoseTurn.setText(String.format("%s %s", getResources().getString(R.string.draws), playerList.get(positionPlayer).getName()));
                 selectedDraw();
                 break;
         }
@@ -91,7 +94,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         layoutBtnFromTellAndShow.setVisibility(View.GONE);
         textTimerDraw.setVisibility(View.VISIBLE);
         drawClear.setVisibility(View.VISIBLE);
-        initTimer(textTimerDraw);
+        timerBig = false;
+        mPresenter.initTimer(false);
 
         paintView = findViewById(R.id.paintView);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -106,34 +110,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         flagShowBtn = true;
         timer.setVisibility(View.VISIBLE);
         layoutBtnFromTellAndShow.setVisibility(View.VISIBLE);
-        initTimer(textTimer);
+        timerBig = true;
+        mPresenter.initTimer(true);
     }
 
-    private void initTimer(TextView textTimer) {
-        mCountDownTimer = new CountDownTimer(61 * 1000, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                Log.v("Log_tag", "Tick of Progress" + millisUntilFinished);
-
-                int iii = (60 - ((int) millisUntilFinished / 1000));
-                circularProgressbar.setProgress(iii);
-
-                long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished));
-                long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished));
-
-                textTimer.setText(String.format(Locale.getDefault(), "%01d:%02d", minutes, seconds));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        };
-        mCountDownTimer.start();
-    }
 
     private void initView() {
         textTimerDraw = findViewById(R.id.text_timer_draw);
@@ -154,11 +134,38 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         buttonAction.setOnClickListener(view -> layoutBtnFromTellAndShow.setVisibility(View.VISIBLE));
         remindWord.setOnClickListener(view -> {
             Toast toast = Toast.makeText(this, word, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER,0,0);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
-            if (!flagShowBtn){
+            if (!flagShowBtn) {
                 layoutBtnFromTellAndShow.setVisibility(View.GONE);
             }
+        });
+        theyGuessed.setOnClickListener(view -> {
+            mPresenter.stopCountDownTimer();
+            timer.setVisibility(View.GONE);
+            layoutBtnFromTellAndShow.setVisibility(View.GONE);
+            layoutBtnPlayer.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < playerList.size(); i++) {
+                if (positionPlayer != i){
+                    View newItem = LayoutInflater.from(this).inflate(R.layout.item_player_button, null);//добавляемый item
+                    RelativeLayout btn = newItem.findViewById(R.id.btnPlayer);
+                    TextView textBtnPlayer = newItem.findViewById(R.id.textBtnPlayer);
+                    String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
+                    textBtnPlayer.setText(name);
+                    int pos = i;
+                    GradientDrawable gd = (GradientDrawable) btn.getBackground();
+                    gd.setColor(ContextCompat.getColor(this, playerList.get(i).getColor()));
+                    btn.setOnClickListener(view1 -> {
+                        mPresenter.playerWin(playerList, pos);
+                    });
+                    layoutBtnPlayer.addView(newItem);
+                }
+            }
+        });
+        theyNotGuessed.setOnClickListener(view -> {
+            mPresenter.stopCountDownTimer();
+            mPresenter.notWin();
         });
 
     }
@@ -169,7 +176,25 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void showResultDialog() {
+    public void startGame() {
 
+    }
+    @Override
+    public void finishCurrentGame(){
+        this.finish();
+
+    }
+
+    @Override
+    public void setCircularProgressbar(int progress) {
+        circularProgressbar.setProgress(progress);
+    }
+
+    @Override
+    public void setTextTimer(String time) {
+        if (timerBig){
+            textTimer.setText(time);
+        }else
+            textTimerDraw.setText(time);
     }
 }

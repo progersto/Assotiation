@@ -2,6 +2,8 @@ package com.natife.assotiation.game;
 
 import android.content.Context;
 
+import com.natife.assotiation.initgame.Player;
+
 import java.util.List;
 
 public interface GameContract {
@@ -9,12 +11,24 @@ public interface GameContract {
 
         Context contextActivity();
 
-        void showResultDialog();
+        void startGame();
+
+        void finishCurrentGame();
+
+        void setCircularProgressbar(int progress);
+
+        void setTextTimer(String time);
     }
 
     interface Presenter {
 
-        void resultPressed();
+        void playerWin(List<Player> playerList, int winPlayer);
+
+        void notWin();
+
+        void initTimer(boolean timerBig);
+
+        void  stopCountDownTimer();
     }
 
     interface Repository {
