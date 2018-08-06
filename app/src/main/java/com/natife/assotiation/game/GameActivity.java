@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.natife.assotiation.R;
-import com.natife.assotiation.choose_how_play.UtilForDraw.PaintView;
+import com.natife.assotiation.game.UtilForDraw.PaintView;
 
 import java.util.List;
 import java.util.Locale;

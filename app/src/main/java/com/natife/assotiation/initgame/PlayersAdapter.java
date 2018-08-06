@@ -22,10 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
-    private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
     private LayoutInflater inflater;
-    private List<String> list = new ArrayList<>();
-    private List<Integer> listColor = new ArrayList<>();
+    private List<Player> playerList = new ArrayList<>();
     private Context context;
     private OnItemVoiceIconListener voiceIconListener;
 
@@ -38,7 +36,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return playerList.size();
     }//getItemCount
 
     @Override
@@ -59,8 +57,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                list.set(holder.getAdapterPosition(), charSequence.toString());
-                Log.d("ddd", "onTextChanged list = " + list);
+                playerList.get(holder.getAdapterPosition()).setName(charSequence.toString());
+                Log.d("ddd", "onTextChanged list = " + playerList);
             }
 
             @Override
@@ -91,19 +89,15 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Log.d("ddd", "onBindViewHolder list = " + list);
+        Log.d("ddd", "onBindViewHolder list = " + playerList);
 
         holder.editTextPlayerName.setHint(context.getResources().getString(R.string.name_player) + " " + (position + 1));
-        holder.editTextPlayerName.setText(list.get(position));
+        holder.editTextPlayerName.setText(playerList.get(position).getName());
 
-        holder.imageColor.setColorFilter(ContextCompat.getColor(context, listColor.get(position)));
+        holder.imageColor.setColorFilter(ContextCompat.getColor(context, playerList.get(position).getColor()));
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                voiceIconListener.onItemVoiceIconClick(holder.getAdapterPosition(), holder.editTextPlayerName);
-            }
-        };
+        View.OnClickListener listener =
+                v -> voiceIconListener.onItemVoiceIconClick(holder.getAdapterPosition(), holder.editTextPlayerName);
         holder.imageVoice.setOnClickListener(listener);
     }//onBindViewHolder
 
@@ -112,19 +106,17 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     }
 
-    public void setData(List<String> list, List<Integer> listColor) {
-        Log.d("ddd", "setData this.list = " + this.list);
-        Log.d("ddd", "setData list = " + list);
-        this.list = list;
-        this.listColor = listColor;
+    public void setData(List<Player> playerList) {
+        Log.d("ddd", "setData this.list = " + this.playerList);
+        this.playerList = playerList;
         notifyDataSetChanged();
     }
 
 
     public void deleteFromListAdapter(int position) {
-            list.remove(position);
+            playerList.remove(position);
 
-            Log.d("ddd", "deleteFromListAdapter list = " + list);
+            Log.d("ddd", "deleteFromListAdapter list = " + playerList);
             notifyItemRemoved(position);//updates after removing Item at position
             notifyDataSetChanged();
     }//deleteFromListAdapter

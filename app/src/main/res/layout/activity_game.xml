@@ -136,7 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/whose_turn">
 
-        <com.natife.assotiation.choose_how_play.UtilForDraw.PaintView
+        <com.natife.assotiation.game.UtilForDraw.PaintView
             android:id="@+id/paintView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

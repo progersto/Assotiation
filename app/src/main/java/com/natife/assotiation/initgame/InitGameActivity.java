@@ -93,8 +93,9 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerPlayers);
 
-        List<String> listName = getIntent().getStringArrayListExtra("listName");
-        mPresenter.initPlayerList(listName);
+        List<Player> playerList = getIntent().getParcelableArrayListExtra("playerList");
+
+        mPresenter.initPlayerList(playerList);
     }//onCreate
 
 
@@ -143,8 +144,8 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
 
 
     @Override
-    public void showListPlayers(List<String> listName, List<Integer> listColor) {
-        adapterPlayers.setData(listName, listColor);
+    public void showListPlayers(List<Player> playerList) {
+        adapterPlayers.setData(playerList);
     }
 
     @Override

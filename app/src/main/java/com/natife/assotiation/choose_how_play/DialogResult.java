@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.natife.assotiation.R;
 import com.natife.assotiation.initgame.InitGameActivity;
+import com.natife.assotiation.initgame.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class DialogResult extends DialogFragment {
     int timeMove;
     int timeGame;
     int numberCircles;
-    private List<String> listName;
+    private List<Player>playerList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,20 +52,20 @@ public class DialogResult extends DialogFragment {
             getActivity().finishAffinity();
             dismiss();
             Intent intent = new Intent(getContext(), InitGameActivity.class);
-            intent.putStringArrayListExtra("listName", (ArrayList<String>) listName);
+            intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
             startActivity(intent);
         });
 
-        listName = getArguments().getStringArrayList("listName");
+        playerList = getArguments().getParcelableArrayList("playerList");
 
         LinearLayout layoutResult = v.findViewById(R.id.layoutResult);//контейнер для вставки item
-        for (int i = 0; i < listName.size(); i++) {
+        for (int i = 0; i < playerList.size(); i++) {
             View newItem = inflater.inflate(R.layout.item_result, null);//добавляемый item
             ImageView image = newItem.findViewById(R.id.image_result);
             TextView nameResult = newItem.findViewById(R.id.name_result);//inserted name
             TextView totalPointsResult = newItem.findViewById(R.id.total_points);
             TextView guessedWordsResult = newItem.findViewById(R.id.guessed_words);
-            String name = listName.get(i).substring(0, 1).toUpperCase() + listName.get(i).substring(1);
+            String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
             nameResult.setText(name);
             layoutResult.addView(newItem);
         }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface InitGameContract {
 
     interface View {
-        void showListPlayers(List<String> listName, List<Integer> listColor);
+        void showListPlayers(List<Player> listPlayer);
 
         void changeScreen(boolean flagChange);
 
@@ -18,7 +18,7 @@ public interface InitGameContract {
     }
 
     interface Presenter {
-        void initPlayerList(List<String>listName);
+        void initPlayerList(List<Player>listWithName);
 
         void btnAddPlayerClicked();
 
@@ -32,11 +32,9 @@ public interface InitGameContract {
     }
 
     interface Repository {
-        List<String> createListNamePlayers(List<String> listWithName);
+        List<Player> createListPlayer(List<Player> listWithName);
 
-        List<Integer> createListColor();
-
-        List<String> addNamePlayerInList();
+        List<Player> addNameInPlayerList();
 
         List<String> createListWords(int difficultLevel, Context context);
     }

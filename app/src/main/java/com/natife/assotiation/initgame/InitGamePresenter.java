@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,8 +20,7 @@ public class InitGamePresenter implements InitGameContract.Presenter {
     //Компоненты MVP приложения
     private InitGameContract.View mView;
     private InitGameContract.Repository mRepository;
-    private List<String> listName;
-    private List<Integer> listColor;
+    private  List<Player> playerList;
     private boolean flagStartGame = false;
     private List<String> listWords;
 
@@ -32,17 +32,16 @@ public class InitGamePresenter implements InitGameContract.Presenter {
 
 
     @Override
-    public void initPlayerList(List<String> listWithName) {
-        listName = mRepository.createListNamePlayers(listWithName);
-        listColor = mRepository.createListColor();
-        mView.showListPlayers(listName, listColor);
+    public void initPlayerList(List<Player> listWithName) {
+        playerList = mRepository.createListPlayer(listWithName);
+        mView.showListPlayers(playerList);
     }
 
     @Override
     public void btnAddPlayerClicked() {
-        if (listName.size() <= 5) {
-            listName = mRepository.addNamePlayerInList();
-            mView.showListPlayers(listName, listColor);
+        if (playerList.size() <= 5) {
+            playerList = mRepository.addNameInPlayerList();
+            mView.showListPlayers(playerList);
         }
     }
 
@@ -57,20 +56,21 @@ public class InitGamePresenter implements InitGameContract.Presenter {
             //start to play...
             Intent intent = new Intent(mView.contextActivity(), ChooseHowPlayActivity.class);
             intent.putStringArrayListExtra("listWords", (ArrayList<String>) listWords);
-            intent.putIntegerArrayListExtra("listColor", (ArrayList<Integer>) listColor);
-            intent.putStringArrayListExtra("listName", (ArrayList<String>) listName);
+            intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
             mView.contextActivity().startActivity(intent);
 
         } else {
-            if (listName.contains("")) {
-                new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
-                        .setMessage(R.string.set_name)
-                        .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
-                        .show();
-            } else {
-                mView.changeScreen(true);
-                flagStartGame = true;
+            for (int i = 0; i < playerList.size(); i++) {
+                if (playerList.get(i).getName().equals("")) {
+                    new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
+                            .setMessage(R.string.set_name)
+                            .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
+                            .show();
+                    return;
+                }
             }
+            mView.changeScreen(true);
+            flagStartGame = true;
         }
     }
 

@@ -2,6 +2,8 @@ package com.natife.assotiation.choose_how_play;
 
 import android.content.Context;
 
+import com.natife.assotiation.initgame.Player;
+
 import java.util.List;
 
 public interface ChooseHowPlayContract {
@@ -32,7 +34,7 @@ public interface ChooseHowPlayContract {
 
         void buttonGo();
 
-        void findDataForFillFields(List<String> listName, List<Integer> listColor, List<String> listWords);
+        void findDataForFillFields(List<Player> playerList, List<String> listWords);
     }
 
     interface Repository {

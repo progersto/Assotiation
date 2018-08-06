@@ -3,6 +3,7 @@ package com.natife.assotiation.choose_how_play;
 import android.content.Intent;
 
 import com.natife.assotiation.game.GameActivity;
+import com.natife.assotiation.initgame.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,7 @@ import java.util.Random;
 public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     private ChooseHowPlayContract.View mView;
     private ChooseHowPlayContract.Repository mRepository;
-    private List<String> listName = new ArrayList<>();
-    private List<Integer> listColor = new ArrayList<>();
+    private List<Player> playerList = new ArrayList<>();
     private List<String> listWords = new ArrayList<>();
     private int positionWord1 = -1;
     private int positionWord2 = -1;
@@ -28,20 +28,19 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     }
 
     @Override
-    public void findDataForFillFields(List<String> listName, List<Integer> listColor, List<String> listWords) {
-        this.listName = listName;
-        this.listColor = listColor;
+    public void findDataForFillFields(List<Player> playerList,  List<String> listWords) {
+        this.playerList = playerList;
         this.listWords = listWords;
-        int positionPlayer = getRandom(listName.size());
+        int positionPlayer = getRandom(playerList.size());
         positionWord1 = getRandom(listWords.size());
         positionWord2 = getRandom(listWords.size());
         String word1 = listWords.get(positionWord1);
         String word2 = listWords.get(positionWord2);
-        name = listName.get(positionPlayer);
+        name = playerList.get(positionPlayer).getName();
         name = name.substring(0, 1).toUpperCase() + name.substring(1);
         word1 = word1.substring(0, 1).toUpperCase() + word1.substring(1);
         word2 = word2.substring(0, 1).toUpperCase() + word2.substring(1);
-        colorPlayer = listColor.get(positionPlayer);
+        colorPlayer = playerList.get(positionPlayer).getColor();
         mView.showData(name, colorPlayer, word1, word2);
         intent = new Intent(mView.contextActivity(), GameActivity.class);
     }

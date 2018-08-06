@@ -1,4 +1,4 @@
-package com.natife.assotiation.choose_how_play.UtilForDraw;
+package com.natife.assotiation.game.UtilForDraw;
 
 import android.content.Context;
 import android.graphics.Bitmap;

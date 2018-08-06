@@ -1,4 +1,4 @@
-package com.natife.assotiation.choose_how_play.UtilForDraw;
+package com.natife.assotiation.game.UtilForDraw;
 import android.graphics.Path;
 
 public class FingerPath {
