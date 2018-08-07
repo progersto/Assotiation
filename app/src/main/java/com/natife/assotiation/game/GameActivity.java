@@ -1,14 +1,24 @@
 package com.natife.assotiation.game;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,6 +30,7 @@ import com.natife.assotiation.game.UtilForDraw.PaintView;
 import com.natife.assotiation.initgame.Player;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View {
     private GameContract.Presenter mPresenter;
@@ -31,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private RelativeLayout timer;
     private ProgressBar circularProgressbar;
     private TextView textTimer;
-    private LinearLayout layoutBtnFromTellAndShow;
+    private View layoutBtnFromTellAndShow;
     private RelativeLayout theyGuessed;
     private RelativeLayout theyNotGuessed;
     private RelativeLayout remindWord;
@@ -134,43 +145,81 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         buttonAction = findViewById(R.id.buttonAction);
         layoutForDraw = findViewById(R.id.layout_for_draw);
         buttonPointBrush = findViewById(R.id.buttonPointBrush);
-        buttonAction.setOnClickListener(view -> layoutBtnFromTellAndShow.setVisibility(View.VISIBLE));
+        buttonAction.setOnClickListener(view -> {
+            Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.btn_block);
+            RelativeLayout theyGuessed = dialog.findViewById(R.id.they_guessed);
+            RelativeLayout theyNotGuessed = dialog.findViewById(R.id.they_not_guessed);
+            RelativeLayout remindWord = dialog.findViewById(R.id.remind_word);
+            theyGuessed.setOnClickListener(view12 -> {
+                dialog.dismiss();
+                btnTheyGuessed();
+            });
+            theyNotGuessed.setOnClickListener(view12 -> {
+                dialog.dismiss();
+                btnTheyNotGuessed();
+            });
+            remindWord.setOnClickListener(view12 -> {
+                dialog.dismiss();
+                btnRemindWord();
+            });
+            dialog.show();
+        });
         remindWord.setOnClickListener(view -> {
-            Toast toast = Toast.makeText(this, word, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            if (!flagShowBtn) {
-                layoutBtnFromTellAndShow.setVisibility(View.GONE);
-            }
+            btnRemindWord();
         });
         theyGuessed.setOnClickListener(view -> {
-            mPresenter.stopCountDownTimer();
-            timer.setVisibility(View.GONE);
-            layoutBtnFromTellAndShow.setVisibility(View.GONE);
-            layoutBtnPlayer.setVisibility(View.VISIBLE);
-
-            for (int i = 0; i < playerList.size(); i++) {
-                if (positionPlayer != i){
-                    View newItem = LayoutInflater.from(this).inflate(R.layout.item_player_button, null);//добавляемый item
-                    RelativeLayout btn = newItem.findViewById(R.id.btnPlayer);
-                    TextView textBtnPlayer = newItem.findViewById(R.id.textBtnPlayer);
-                    String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
-                    textBtnPlayer.setText(name);
-                    int posWin = i;
-                    gd = (GradientDrawable) btn.getBackground();
-                    gd.setColor(ContextCompat.getColor(this, playerList.get(i).getColor()));
-                    btn.setOnClickListener(view1 -> {
-                        mPresenter.playerWin(playerList, posWin, positionPlayer);
-                    });
-                    layoutBtnPlayer.addView(newItem);
-                }
-            }
+            btnTheyGuessed();
         });
         theyNotGuessed.setOnClickListener(view -> {
-            mPresenter.stopCountDownTimer();
-            mPresenter.notWin();
+            btnTheyNotGuessed();
         });
+    }
 
+    private void btnRemindWord(){
+        Toast toast = Toast.makeText(this, word, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    private void btnTheyNotGuessed(){
+        mPresenter.stopCountDownTimer();
+        mPresenter.notWin();
+    }
+
+    private void btnTheyGuessed(){
+        mPresenter.stopCountDownTimer();
+        whoseTurn.setText(getResources().getString(R.string.who_guessed));
+        whoseTurn.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
+
+        if (flagShowBtn) {
+            timer.setVisibility(View.GONE);
+        } else {
+            textTimerDraw.setVisibility(View.GONE);
+            drawClear.setVisibility(View.GONE);
+            layoutForDraw.setVisibility(View.GONE);
+        }
+        layoutBtnFromTellAndShow.setVisibility(View.GONE);
+        layoutBtnPlayer.setVisibility(View.VISIBLE);
+
+        for (int i = 0; i < playerList.size(); i++) {
+            if (positionPlayer != i) {
+                View newItem = LayoutInflater.from(this).inflate(R.layout.item_player_button, null);//добавляемый item
+                RelativeLayout btn = newItem.findViewById(R.id.btnPlayer);
+                TextView textBtnPlayer = newItem.findViewById(R.id.textBtnPlayer);
+                String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
+                textBtnPlayer.setText(name);
+                int posWin = i;
+                gd = (GradientDrawable) btn.getBackground();
+                gd.setColor(ContextCompat.getColor(this, playerList.get(i).getColor()));
+                btn.setOnClickListener(view1 -> {
+                    mPresenter.playerWin(playerList, posWin, positionPlayer);
+                });
+                layoutBtnPlayer.addView(newItem);
+            }
+        }
     }
 
     @Override
@@ -182,8 +231,9 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     public void startGame() {
 
     }
+
     @Override
-    public void finishCurrentGame(){
+    public void finishCurrentGame() {
         this.finish();
     }
 
@@ -194,15 +244,17 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @Override
     public void setTextTimer(String time) {
-        if (timerBig){
+        if (timerBig) {
             textTimer.setText(time);
-        }else
+        } else
             textTimerDraw.setText(time);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
+        if (gd != null) {
+            gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
+        }
     }
 }
