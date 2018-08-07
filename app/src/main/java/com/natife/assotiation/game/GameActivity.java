@@ -45,6 +45,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private int positionPlayer;
     private List<Player> playerList;
     private boolean timerBig;
+    private GradientDrawable gd;
 
 
     @Override
@@ -155,11 +156,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                     TextView textBtnPlayer = newItem.findViewById(R.id.textBtnPlayer);
                     String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
                     textBtnPlayer.setText(name);
-                    int pos = i;
-                    GradientDrawable gd = (GradientDrawable) btn.getBackground();
+                    int posWin = i;
+                    gd = (GradientDrawable) btn.getBackground();
                     gd.setColor(ContextCompat.getColor(this, playerList.get(i).getColor()));
                     btn.setOnClickListener(view1 -> {
-                        mPresenter.playerWin(playerList, pos);
+                        mPresenter.playerWin(playerList, posWin, positionPlayer);
                     });
                     layoutBtnPlayer.addView(newItem);
                 }
@@ -184,7 +185,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void finishCurrentGame(){
         this.finish();
-
     }
 
     @Override
@@ -198,5 +198,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             textTimer.setText(time);
         }else
             textTimerDraw.setText(time);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
     }
 }

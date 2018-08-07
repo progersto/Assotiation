@@ -22,7 +22,7 @@ public interface GameContract {
 
     interface Presenter {
 
-        void playerWin(List<Player> playerList, int winPlayer);
+        void playerWin(List<Player> playerList, int winPlayer, int positionGuessingPlayer);
 
         void notWin();
 

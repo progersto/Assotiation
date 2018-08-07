@@ -163,6 +163,8 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         buttonGo.setOnClickListener(view -> {
             if (flagWord && flagAction) {
+                flagWord = false;
+                flagAction = false;
                 mPresenter.buttonGo();
             } else if (!flagWord && flagAction || !flagWord && !flagAction) {
                 Toast.makeText(this, "Выберите слово", Toast.LENGTH_SHORT).show();

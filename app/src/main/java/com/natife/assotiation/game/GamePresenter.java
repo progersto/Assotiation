@@ -37,10 +37,13 @@ public class GamePresenter implements GameContract.Presenter {
         return mRepository.getCurrentPlayerList();
     }
 
+
     @Override
-    public void playerWin(List<Player> playerList, int winPlayer) {
+    public void playerWin(List<Player> playerList, int winPlayer, int positionGuessingPlayer) {
         int score = playerList.get(winPlayer).getCountScore() + 1;
         int countWords = playerList.get(winPlayer).getCountWords() + 1;
+        int scoreGuessingPlayer = playerList.get(positionGuessingPlayer).getCountScore() + 1;
+        playerList.get(positionGuessingPlayer).setCountScore(scoreGuessingPlayer);
         playerList.get(winPlayer).setCountScore(score);
         playerList.get(winPlayer).setCountWords(countWords);
 

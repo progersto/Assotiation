@@ -14,11 +14,15 @@ public class InitGameRepository implements InitGameContract.Repository {
     private List<Player> playerList;
     private List<Integer>colorList = new ArrayList<>(Arrays.asList(R.color.colorPlayer1, R.color.colorPlayer2,
             R.color.colorPlayer3, R.color.colorPlayer4, R.color.colorPlayer5, R.color.colorPlayer6));
-    private static InitGameRepository INSTANCE;
+    private static volatile InitGameRepository INSTANCE;
 
     public static InitGameContract.Repository getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new InitGameRepository();
+            synchronized (InitGameRepository.class){
+                if (INSTANCE == null) {
+                    INSTANCE = new InitGameRepository();
+                }
+            }
         }
         return INSTANCE;
     }

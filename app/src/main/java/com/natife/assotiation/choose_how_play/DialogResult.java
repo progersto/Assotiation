@@ -26,6 +26,8 @@ import com.natife.assotiation.initgame.InitGameActivity;
 import com.natife.assotiation.initgame.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DialogResult extends DialogFragment {
@@ -35,13 +37,9 @@ public class DialogResult extends DialogFragment {
     int timeMove;
     int timeGame;
     int numberCircles;
-    private List<Player>playerList;
+    private List<Player> localPayerList;
+    private List<Player> playerList;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("ddd", "fff");
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -57,19 +55,50 @@ public class DialogResult extends DialogFragment {
         });
 
         playerList = getArguments().getParcelableArrayList("playerList");
+        localPayerList = new ArrayList<>(playerList);
+
+        Collections.sort(localPayerList, new Comparator<Player>() {
+            @Override
+            public int compare(Player player, Player t1) {
+                if (player.getCountScore() == t1.getCountScore()) return 0;
+                else if (player.getCountScore() < t1.getCountScore()) return 1;
+                else return -1;
+            }
+        });
 
         LinearLayout layoutResult = v.findViewById(R.id.layoutResult);//контейнер для вставки item
+
+        boolean isWin = checkWin();
         for (int i = 0; i < playerList.size(); i++) {
             View newItem = inflater.inflate(R.layout.item_result, null);//добавляемый item
             ImageView image = newItem.findViewById(R.id.image_result);
             TextView nameResult = newItem.findViewById(R.id.name_result);//inserted name
             TextView totalPointsResult = newItem.findViewById(R.id.total_points);
             TextView guessedWordsResult = newItem.findViewById(R.id.guessed_words);
+
             String name = playerList.get(i).getName().substring(0, 1).toUpperCase() + playerList.get(i).getName().substring(1);
             nameResult.setText(name);
+            String guessedWords = String.format("%s %s %s",
+                    getResources().getString(R.string.guessed),
+                    String.valueOf(localPayerList.get(i).getCountWords()),
+                    getResources().getString(R.string.words));
+            guessedWordsResult.setText(guessedWords);
+            totalPointsResult.setText(String.valueOf(localPayerList.get(i).getCountScore()));
+            if (isWin && i == 0) {
+                image.setVisibility(View.VISIBLE);
+            } else
+                image.setVisibility(View.INVISIBLE);
             layoutResult.addView(newItem);
         }
         return v;
+    }
+
+    private boolean checkWin() {
+        boolean flag = true;
+            if (localPayerList.get(0).getCountScore() == localPayerList.get(1).getCountScore() ) {
+                flag = false;
+            }
+        return flag;
     }
 
     @Override
