@@ -35,6 +35,8 @@ public interface ChooseHowPlayContract {
         void buttonGo();
 
         void findDataForFillFields(List<Player> playerList, List<String> listWords);
+
+        List<Player> getPlayerList();
     }
 
     interface Repository {

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitGamePresenter implements InitGameContract.Presenter {
-    //Компоненты MVP приложения
     private InitGameContract.View mView;
     private InitGameContract.Repository mRepository;
     private  List<Player> playerList;
@@ -27,7 +26,7 @@ public class InitGamePresenter implements InitGameContract.Presenter {
     //передаем экземпляр View
     public InitGamePresenter(InitGameContract.View mView) {
         this.mView = mView;
-        this.mRepository = new InitGameRepository();
+        this.mRepository = InitGameRepository.getInstance();
     }
 
 

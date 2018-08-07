@@ -37,6 +37,9 @@ public interface InitGameContract {
         List<Player> addNameInPlayerList();
 
         List<String> createListWords(int difficultLevel, Context context);
+
+        List<Player> getCurrentPlayerList();
+
     }
 
 }

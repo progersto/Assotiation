@@ -56,7 +56,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         mPresenter = new ChooseHowPlayPresenter(this);
 
         listWords = getIntent().getStringArrayListExtra("listWords");
-        playerList = getIntent().getParcelableArrayListExtra("playerList");
+        playerList = mPresenter.getPlayerList();
 
         initViews();
 
@@ -164,9 +164,9 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         buttonGo.setOnClickListener(view -> {
             if (flagWord && flagAction) {
                 mPresenter.buttonGo();
-            } else if (!flagWord && flagAction || !flagWord && !flagAction){
+            } else if (!flagWord && flagAction || !flagWord && !flagAction) {
                 Toast.makeText(this, "Выберите слово", Toast.LENGTH_SHORT).show();
-            }else Toast.makeText(this, "Выберите действие", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(this, "Выберите действие", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -200,11 +200,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     protected void onRestart() {
         super.onRestart();
 
-        List<Player> ddd= playerList;
+        List<Player> ddd = playerList;
         frameShowWords.setVisibility(View.VISIBLE);
         frameWord1.setVisibility(View.GONE);
         frameWord2.setVisibility(View.GONE);
-        word2.setTextColor(ContextCompat.getColor(this,  R.color.colorTextSelection));
+        word2.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));
         frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.recycler_backgroind));

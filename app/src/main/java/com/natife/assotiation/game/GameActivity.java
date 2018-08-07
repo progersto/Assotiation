@@ -52,15 +52,17 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        howExplain = getIntent().getStringExtra("how_explain");
-        positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
-        playerList = getIntent().getParcelableArrayListExtra("playerList");
-        listWords = getIntent().getStringArrayListExtra("listWords");
-        word = getIntent().getStringExtra("word");
-        initView();
-
         //Создаём Presenter и в аргументе передаём ему this - эта Activity расширяет интерфейс GameContract.View
         mPresenter = new GamePresenter(this);
+
+        howExplain = getIntent().getStringExtra("how_explain");
+        positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
+        listWords = getIntent().getStringArrayListExtra("listWords");
+        word = getIntent().getStringExtra("word");
+
+        playerList = mPresenter.getPlayerList();
+
+        initView();
     }
 
     @Override

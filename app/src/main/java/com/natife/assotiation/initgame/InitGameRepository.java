@@ -11,9 +11,17 @@ import java.util.List;
 import static com.natife.assotiation.utils.ListGenerator.createListSelectedLevel;
 
 public class InitGameRepository implements InitGameContract.Repository {
+    private List<Player> playerList;
     private List<Integer>colorList = new ArrayList<>(Arrays.asList(R.color.colorPlayer1, R.color.colorPlayer2,
             R.color.colorPlayer3, R.color.colorPlayer4, R.color.colorPlayer5, R.color.colorPlayer6));
-    private List<Player> playerList;
+    private static InitGameRepository INSTANCE;
+
+    public static InitGameContract.Repository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new InitGameRepository();
+        }
+        return INSTANCE;
+    }
 
 
     @Override
@@ -42,6 +50,11 @@ public class InitGameRepository implements InitGameContract.Repository {
                 playerList.add(new Player(listWithName.get(i).getName(), colorList.get(i), 0, 0));
             }
         }
+        return playerList;
+    }
+
+
+    public List<Player> getCurrentPlayerList(){
         return playerList;
     }
 

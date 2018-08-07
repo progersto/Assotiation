@@ -29,6 +29,8 @@ public interface GameContract {
         void initTimer(boolean timerBig);
 
         void  stopCountDownTimer();
+
+        List<Player> getPlayerList();
     }
 
     interface Repository {

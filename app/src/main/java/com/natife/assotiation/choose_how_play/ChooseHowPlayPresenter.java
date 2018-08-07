@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Parcelable;
 
 import com.natife.assotiation.game.GameActivity;
+import com.natife.assotiation.initgame.InitGameContract;
+import com.natife.assotiation.initgame.InitGameRepository;
 import com.natife.assotiation.initgame.Player;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.Random;
 
 public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
     private ChooseHowPlayContract.View mView;
-    private ChooseHowPlayContract.Repository mRepository;
+    private InitGameContract.Repository mRepository;
     private List<Player> playerList = new ArrayList<>();
     private List<String> listWords = new ArrayList<>();
     private int positionWord1 = -1;
@@ -26,7 +28,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
     //передаем экземпляр View
     public ChooseHowPlayPresenter(ChooseHowPlayContract.View mView) {
         this.mView = mView;
-        this.mRepository = new ChooseHowPlayRepository();
+        this.mRepository = InitGameRepository.getInstance();
     }
 
     @Override
@@ -45,6 +47,11 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
         colorPlayer = playerList.get(positionPlayer).getColor();
         mView.showData(name, colorPlayer, word1, word2);
         intent = new Intent(mView.contextActivity(), GameActivity.class);
+    }
+
+    @Override
+    public List<Player> getPlayerList() {
+        return mRepository.getCurrentPlayerList();
     }
 
 

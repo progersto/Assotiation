@@ -3,6 +3,8 @@ package com.natife.assotiation.game;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import com.natife.assotiation.initgame.InitGameContract;
+import com.natife.assotiation.initgame.InitGameRepository;
 import com.natife.assotiation.initgame.Player;
 import com.natife.assotiation.utils.PreferUtil;
 
@@ -12,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GamePresenter implements GameContract.Presenter {
     private GameContract.View mView;
-    private GameContract.Repository mRepository;
+    private InitGameContract.Repository mRepository;
     private int timeMove;
     private int timeGame;
     private int numberLap;
@@ -21,13 +23,18 @@ public class GamePresenter implements GameContract.Presenter {
     //передаем экземпляр View
     public GamePresenter(GameContract.View mView) {
         this.mView = mView;
-        this.mRepository = new GameRepository();
+        this.mRepository = InitGameRepository.getInstance();
 
 //        PreferUtil preferUtil = new PreferUtil();
 //        //get info from preferences
 //        timeMove = preferUtil.restoreTimeMove(mView.contextActivity());
 //        timeGame = preferUtil.restoreTimeGame(mView.contextActivity());
 //        numberLap = preferUtil.restoreNumberCircles(mView.contextActivity());
+    }
+
+    @Override
+    public List<Player> getPlayerList() {
+        return mRepository.getCurrentPlayerList();
     }
 
     @Override
