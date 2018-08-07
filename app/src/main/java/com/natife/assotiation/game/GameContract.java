@@ -11,8 +11,6 @@ public interface GameContract {
 
         Context contextActivity();
 
-        void startGame();
-
         void finishCurrentGame();
 
         void setCircularProgressbar(int progress);

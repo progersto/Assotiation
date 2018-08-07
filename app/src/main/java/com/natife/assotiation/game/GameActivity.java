@@ -227,13 +227,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         return null;
     }
 
-    @Override
-    public void startGame() {
-
-    }
 
     @Override
     public void finishCurrentGame() {
+        Intent intent = new Intent();
+//        intent.putExtra("name", etName.getText().toString());
+        setResult(RESULT_OK, intent);
+        finish();
         this.finish();
     }
 

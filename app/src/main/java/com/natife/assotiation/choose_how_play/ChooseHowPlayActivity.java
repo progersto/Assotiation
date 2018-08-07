@@ -1,6 +1,7 @@
 package com.natife.assotiation.choose_how_play;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -165,7 +166,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             if (flagWord && flagAction) {
                 flagWord = false;
                 flagAction = false;
-                mPresenter.buttonGo();
+                mPresenter.buttonGoPressed();
             } else if (!flagWord && flagAction || !flagWord && !flagAction) {
                 Toast.makeText(this, "Выберите слово", Toast.LENGTH_SHORT).show();
             } else Toast.makeText(this, "Выберите действие", Toast.LENGTH_SHORT).show();
@@ -199,10 +200,18 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;}
+        String name = data.getStringExtra("name");
+
+    }
+
+
+    @Override
     protected void onRestart() {
         super.onRestart();
 
-        List<Player> ddd = playerList;
         frameShowWords.setVisibility(View.VISIBLE);
         frameWord1.setVisibility(View.GONE);
         frameWord2.setVisibility(View.GONE);
@@ -221,6 +230,8 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         mPresenter.findDataForFillFields(playerList, listWords);
     }
+
+
 
 
 }

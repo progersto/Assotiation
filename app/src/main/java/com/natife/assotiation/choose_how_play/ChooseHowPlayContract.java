@@ -32,7 +32,7 @@ public interface ChooseHowPlayContract {
 
         void resultPressed();
 
-        void buttonGo();
+        void buttonGoPressed();
 
         void findDataForFillFields(List<Player> playerList, List<String> listWords);
 

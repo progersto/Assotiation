@@ -86,7 +86,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
     }
 
     @Override
-    public void buttonGo() {
+    public void buttonGoPressed() {
         intent.putStringArrayListExtra("listWords", (ArrayList<String>) listWords);
         intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
         intent.putExtra("positionPlayer", positionPlayer);
