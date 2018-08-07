@@ -42,8 +42,13 @@ public class DialogResult extends DialogFragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        boolean timeGameFlag = getArguments().getBoolean("timeGameFlag");
+        playerList = getArguments().getParcelableArrayList("playerList");
+        localPayerList = new ArrayList<>(playerList);
+
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        getDialog().setCanceledOnTouchOutside(timeGameFlag);
         View v = inflater.inflate(R.layout.dialog_result, null);
         RelativeLayout buttonAgain = v.findViewById(R.id.buttonAgain);
         buttonAgain.setOnClickListener(view -> {
@@ -53,9 +58,6 @@ public class DialogResult extends DialogFragment {
             intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
             startActivity(intent);
         });
-
-        playerList = getArguments().getParcelableArrayList("playerList");
-        localPayerList = new ArrayList<>(playerList);
 
         Collections.sort(localPayerList, new Comparator<Player>() {
             @Override

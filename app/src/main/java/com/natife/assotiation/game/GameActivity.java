@@ -28,13 +28,13 @@ import android.widget.Toast;
 import com.natife.assotiation.R;
 import com.natife.assotiation.game.UtilForDraw.PaintView;
 import com.natife.assotiation.initgame.Player;
+import com.natife.assotiation.utils.PreferUtil;
 
 import java.util.List;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View {
     private GameContract.Presenter mPresenter;
-    private List<String> listWords;
     private String howExplain;
     private TextView textTimerDraw;
     private TextView whoseTurn;
@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private List<Player> playerList;
     private boolean timerBig;
     private GradientDrawable gd;
+    private int timeMove;
 
 
     @Override
@@ -69,8 +70,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         howExplain = getIntent().getStringExtra("how_explain");
         positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
-        listWords = getIntent().getStringArrayListExtra("listWords");
         word = getIntent().getStringExtra("word");
+        timeMove = new PreferUtil().restoreTimeMove(this);//get info from preferences
 
         playerList = mPresenter.getPlayerList();
 
@@ -84,7 +85,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     private void showView(String howExplain) {
-
         whoseTurn.setTextColor(ContextCompat.getColor(this, playerList.get(positionPlayer).getColor()));
         switch (howExplain) {
             case "tell":
@@ -109,7 +109,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         textTimerDraw.setVisibility(View.VISIBLE);
         drawClear.setVisibility(View.VISIBLE);
         timerBig = false;
-        mPresenter.initTimer(false);
+        mPresenter.initTimer(false, timeMove);
 
         paintView = findViewById(R.id.paintView);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -125,7 +125,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         timer.setVisibility(View.VISIBLE);
         layoutBtnFromTellAndShow.setVisibility(View.VISIBLE);
         timerBig = true;
-        mPresenter.initTimer(true);
+        mPresenter.initTimer(true, timeMove);
     }
 
 
@@ -136,6 +136,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         drawClear.setOnClickListener(view -> paintView.clear());
         timer = findViewById(R.id.timer);
         circularProgressbar = findViewById(R.id.circularProgressbar);
+        circularProgressbar.setMax(timeMove);
         textTimer = findViewById(R.id.text_timer);
         layoutBtnFromTellAndShow = findViewById(R.id.layout_btn_from_tell_and_show);
         theyGuessed = findViewById(R.id.they_guessed);
@@ -224,16 +225,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @Override
     public Context contextActivity() {
-        return null;
+        return this;
     }
 
 
     @Override
     public void finishCurrentGame() {
-        Intent intent = new Intent();
-//        intent.putExtra("name", etName.getText().toString());
-        setResult(RESULT_OK, intent);
-        finish();
+        setResult(RESULT_OK, new Intent());
         this.finish();
     }
 
@@ -256,5 +254,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         if (gd != null) {
             gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
         }
+        mPresenter.stopCountDownTimer();
     }
 }

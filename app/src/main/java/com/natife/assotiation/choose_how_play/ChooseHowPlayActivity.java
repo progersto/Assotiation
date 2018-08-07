@@ -1,6 +1,5 @@
 package com.natife.assotiation.choose_how_play;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -16,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.game.GameActivity;
 import com.natife.assotiation.initgame.Player;
+import com.natife.assotiation.utils.PreferUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     private int colorPlayer = 0;
     private boolean flagWord = false;
     private boolean flagAction = false;
+    private String howExplain;
+    private String word;
+    private final int GAME = 1000;
+    private int timeGame;
+    private boolean timeGameFlag = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,10 +64,11 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
         listWords = getIntent().getStringArrayListExtra("listWords");
         playerList = mPresenter.getPlayerList();
+        timeGame = new PreferUtil().restoreTimeGame(this);//get info from preferences
 
         initViews();
 
-        mPresenter.findDataForFillFields(playerList, listWords);
+        mPresenter.findDataForFillFields(playerList, listWords, timeGame);
     }
 
 
@@ -86,7 +93,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         buttonGo = findViewById(R.id.buttonGo);
 
         results.setOnClickListener(view -> {
-            mPresenter.resultPressed();
+            showResultDialog();
         });
         frameShowWords.setOnClickListener(view -> {
             frameShowWords.setVisibility(View.GONE);
@@ -95,7 +102,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         word1.setOnClickListener(view -> {
             flagWord = true;
-            mPresenter.word1Pressed(word1.getText().toString());
+            word = word1.getText().toString();
             word1.setTextColor(ContextCompat.getColor(this, colorPlayer));
             word2.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             frameWord1.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
@@ -105,7 +112,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         word2.setOnClickListener(view -> {
             flagWord = true;
-            mPresenter.word1Pressed(word2.getText().toString());
+            word = word2.getText().toString();
             word2.setTextColor(ContextCompat.getColor(this, colorPlayer));
             word1.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             frameWord2.setForeground(ContextCompat.getDrawable(this, R.drawable.selected_action_and_word));
@@ -115,7 +122,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         layoutShow.setOnClickListener(view -> {
             flagAction = true;
-            mPresenter.layoutShow_Pressed();
+            howExplain = "show";
             textShow.setTextColor(ContextCompat.getColor(this, colorPlayer));
             textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
@@ -130,7 +137,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         layoutTell.setOnClickListener(view -> {
             flagAction = true;
-            mPresenter.layoutTell_Pressed();
+            howExplain = "tell";
             textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             textTell.setTextColor(ContextCompat.getColor(this, colorPlayer));
             textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
@@ -145,7 +152,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         });
         layoutDraw.setOnClickListener(view -> {
             flagAction = true;
-            mPresenter.layoutDraw_Pressed();
+            howExplain = "draw";
             //color text
             textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
             textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
@@ -175,16 +182,21 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
 
     @Override
-    public Context contextActivity() {
-        return ChooseHowPlayActivity.this;
+    public void startGameActivity(int positionPlayer) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("positionPlayer", positionPlayer);
+        intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
+        intent.putExtra("word", word);
+        intent.putExtra("how_explain", howExplain);
+        startActivityForResult(intent, GAME);
     }
 
 
-    @Override
     public void showResultDialog() {
         DialogResult dialogResult = new DialogResult();
         Bundle args = new Bundle();
         args.putParcelableArrayList("playerList", (ArrayList<? extends Parcelable>) playerList);
+        args.putBoolean("timeGameFlag", timeGameFlag);
         dialogResult.setArguments(args);
         dialogResult.show(getSupportFragmentManager(), "dialogResult");
     }
@@ -198,13 +210,20 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         colorPlayer = color;
     }
 
+    @Override
+    public void timeOver() {
+        timeGameFlag = false;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;}
-        String name = data.getStringExtra("name");
-
+        if (requestCode == GAME && resultCode == RESULT_OK){
+//            String name = data.getStringExtra("name");
+            if (!timeGameFlag){
+                showResultDialog();
+            }
+        }
     }
 
 
@@ -228,10 +247,13 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         textShow.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
-        mPresenter.findDataForFillFields(playerList, listWords);
+        mPresenter.findDataForFillFields(playerList, listWords, timeGame);
     }
 
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPresenter.stopTimerGame();
+    }
 }

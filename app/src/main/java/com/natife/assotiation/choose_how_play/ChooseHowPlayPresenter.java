@@ -1,9 +1,7 @@
 package com.natife.assotiation.choose_how_play;
 
-import android.content.Intent;
-import android.os.Parcelable;
+import android.os.CountDownTimer;
 
-import com.natife.assotiation.game.GameActivity;
 import com.natife.assotiation.initgame.InitGameContract;
 import com.natife.assotiation.initgame.InitGameRepository;
 import com.natife.assotiation.initgame.Player;
@@ -12,18 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
+public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
     private ChooseHowPlayContract.View mView;
     private InitGameContract.Repository mRepository;
     private List<Player> playerList = new ArrayList<>();
     private List<String> listWords = new ArrayList<>();
     private int positionWord1 = -1;
     private int positionWord2 = -1;
-    private Intent intent;
+    //    private Intent intent;
     private String name;
     private int colorPlayer = 0;
     private String word;
     private int positionPlayer;
+    private CountDownTimer mCountDownTimer;
+    private final int COUNT_DOWN_INTERVAL = 1000;
 
     //передаем экземпляр View
     public ChooseHowPlayPresenter(ChooseHowPlayContract.View mView) {
@@ -32,7 +32,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
     }
 
     @Override
-    public void findDataForFillFields(List<Player> playerList,  List<String> listWords) {
+    public void findDataForFillFields(List<Player> playerList, List<String> listWords, int timeGame) {
         this.playerList = playerList;
         this.listWords = listWords;
         positionPlayer = getRandom(playerList.size());
@@ -46,7 +46,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
         word2 = word2.substring(0, 1).toUpperCase() + word2.substring(1);
         colorPlayer = playerList.get(positionPlayer).getColor();
         mView.showData(name, colorPlayer, word1, word2);
-        intent = new Intent(mView.contextActivity(), GameActivity.class);
+        startTimerGame(timeGame);
     }
 
     @Override
@@ -56,42 +56,8 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
 
 
     @Override
-    public void word1Pressed(String word) {
-        this.word = word;
-    }
-
-    @Override
-    public void word2Pressed(String word) {
-        this.word = word;
-    }
-
-    @Override
-    public void layoutShow_Pressed() {
-        intent.putExtra("how_explain", "show");
-    }
-
-    @Override
-    public void layoutTell_Pressed() {
-        intent.putExtra("how_explain", "tell");
-    }
-
-    @Override
-    public void layoutDraw_Pressed() {
-        intent.putExtra("how_explain", "draw");
-    }
-
-    @Override
-    public void resultPressed() {
-        mView.showResultDialog();
-    }
-
-    @Override
     public void buttonGoPressed() {
-        intent.putStringArrayListExtra("listWords", (ArrayList<String>) listWords);
-        intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
-        intent.putExtra("positionPlayer", positionPlayer);
-        intent.putExtra("word", word);
-        mView.contextActivity().startActivity(intent);
+        mView.startGameActivity(positionPlayer);
     }
 
     private int getRandom(int size) {
@@ -101,9 +67,29 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter{
         if (positionWord1 != -1 && positionWord1 == position) {
             getRandom(size);
         }
-
         return position;
     }// getRandom
 
+
+    public void startTimerGame(int timeGame) {
+        mCountDownTimer = new CountDownTimer((timeGame + 1) * 1000, COUNT_DOWN_INTERVAL) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                mView.timeOver();
+            }
+        };
+        mCountDownTimer.start();
+    }
+
+
+    @Override
+    public void stopTimerGame() {
+        mCountDownTimer.cancel();
+    }
 
 }

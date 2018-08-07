@@ -24,7 +24,7 @@ public interface GameContract {
 
         void notWin();
 
-        void initTimer(boolean timerBig);
+        void initTimer(boolean timerBig, int timeMove);
 
         void  stopCountDownTimer();
 

@@ -15,19 +15,20 @@ import java.util.concurrent.TimeUnit;
 public class GamePresenter implements GameContract.Presenter {
     private GameContract.View mView;
     private InitGameContract.Repository mRepository;
-    private int timeMove;
+
     private int timeGame;
     private int numberLap;
     private CountDownTimer mCountDownTimer;
+    private int countDownInterval = 1000;
 
     //передаем экземпляр View
     public GamePresenter(GameContract.View mView) {
         this.mView = mView;
         this.mRepository = InitGameRepository.getInstance();
 
-//        PreferUtil preferUtil = new PreferUtil();
-//        //get info from preferences
-//        timeMove = preferUtil.restoreTimeMove(mView.contextActivity());
+        PreferUtil preferUtil = new PreferUtil();
+        //get info from preferences
+
 //        timeGame = preferUtil.restoreTimeGame(mView.contextActivity());
 //        numberLap = preferUtil.restoreNumberCircles(mView.contextActivity());
     }
@@ -58,15 +59,15 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     @Override
-    public void initTimer(boolean timerBig) {
-        mCountDownTimer = new CountDownTimer(61 * 1000, 1000) {
+    public void initTimer(boolean timerBig, int timeMove) {
+        mCountDownTimer = new CountDownTimer((timeMove + 1) * 1000, countDownInterval) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.v("Log_tag", "Tick of Progress" + millisUntilFinished);
 
-                if (timerBig){
-                    int progress = (60 - ((int) millisUntilFinished / 1000));
+                if (timerBig) {
+                    int progress = (timeMove - ((int) millisUntilFinished / 1000));
                     mView.setCircularProgressbar(progress);
                 }
 
