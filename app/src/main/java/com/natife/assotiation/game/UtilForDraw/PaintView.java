@@ -9,17 +9,20 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.natife.assotiation.R;
 
 import java.util.ArrayList;
 
 public class PaintView extends View {
 
     public static int BRUSH_SIZE = 20;
-    public static final int DEFAULT_COLOR = Color.RED;
+    public static int DEFAULT_COLOR;
     public static final int DEFAULT_BG_COLOR = Color.WHITE;
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
@@ -39,10 +42,13 @@ public class PaintView extends View {
 
     public PaintView(Context context) {
         this(context, null);
+        DEFAULT_COLOR = ContextCompat.getColor(context, R.color.colorDefault);
     }
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        DEFAULT_COLOR = ContextCompat.getColor(context, R.color.colorDefault);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -67,6 +73,12 @@ public class PaintView extends View {
         currentColor = DEFAULT_COLOR;
         strokeWidth = BRUSH_SIZE;
     }
+
+    public void setColorPaint(int color){
+        DEFAULT_COLOR = color;
+        currentColor = DEFAULT_COLOR;
+    }
+
 
     public void normal() {
         emboss = false;

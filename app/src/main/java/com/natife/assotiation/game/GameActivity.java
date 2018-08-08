@@ -2,23 +2,16 @@ package com.natife.assotiation.game;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,7 +27,6 @@ import com.natife.assotiation.initgame.Player;
 import com.natife.assotiation.utils.PreferUtil;
 
 import java.util.List;
-import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, ColorPickerDialogListener {
     private GameContract.Presenter mPresenter;
@@ -62,7 +54,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private GradientDrawable gd;
     private int timeMove;
     private static final int DIALOG_ID = 0;
-
+    private ColorPickerDialog.Builder colorDialog;
+    private int colorForStartDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +69,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
         word = getIntent().getStringExtra("word");
         timeMove = new PreferUtil().restoreTimeMove(this);//get info from preferences
+        colorForStartDialog = ContextCompat.getColor(this, R.color.colorDefault);
 
         playerList = mPresenter.getPlayerList();
 
@@ -151,22 +145,18 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         layoutForDraw = findViewById(R.id.layout_for_draw);
         buttonPointBrush = findViewById(R.id.buttonPointBrush);
         buttonPointBrush.setOnClickListener(view -> {
-
-            ColorPickerDialog.newBuilder()
-                    .setDialogType(ColorPickerDialog.TYPE_PRESETS)
+            colorDialog = ColorPickerDialog.newBuilder();
+            colorDialog.setDialogType(ColorPickerDialog.TYPE_PRESETS)
                     .setAllowPresets(false)
                     .setDialogId(DIALOG_ID)
-                    .setColor(R.color.colorPlayer5)
+                    .setColor(colorForStartDialog)
                     .setDialogTitle(R.string.select_color)
                     .setSelectedButtonText(R.string.select)
                     .setShowAlphaSlider(false)
-                    .setColor(Color.BLACK)
                     .setPresetsButtonText(R.string.presets)
                     .setCustomButtonText(R.string.custom)
                     .setShowAlphaSlider(false)
                     .show(this);
-
-
         });
         buttonAction.setOnClickListener(view -> {
             Dialog dialog = new Dialog(this);
@@ -201,18 +191,18 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         });
     }
 
-    private void btnRemindWord(){
+    private void btnRemindWord() {
         Toast toast = Toast.makeText(this, word, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
-    private void btnTheyNotGuessed(){
+    private void btnTheyNotGuessed() {
         mPresenter.stopCountDownTimer();
         mPresenter.notWin();
     }
 
-    private void btnTheyGuessed(){
+    private void btnTheyGuessed() {
         mPresenter.stopCountDownTimer();
         whoseTurn.setText(getResources().getString(R.string.who_guessed));
         whoseTurn.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
@@ -283,14 +273,14 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     public void onColorSelected(int dialogId, int color) {
         switch (dialogId) {
             case DIALOG_ID:
-                // We got result from the dialog that is shown when clicking on the icon in the action bar.
-                Toast.makeText(this, "Selected Color: #" + Integer.toHexString(color), Toast.LENGTH_SHORT).show();
+                paintView.setColorPaint(color);
+                colorDialog.setColor(color);
+                colorForStartDialog = color;
                 break;
         }
     }
 
     @Override
     public void onDialogDismissed(int dialogId) {
-
     }
 }
