@@ -64,12 +64,6 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_how_play);
 
-        //Создаём Presenter и в аргументе передаём ему this - эта Activity расширяет интерфейс InitGameContract.View
-        mPresenter = new ChooseHowPlayPresenter(this);
-
-        listWords = getIntent().getStringArrayListExtra("listWords");
-        playerList = mPresenter.getPlayerList();
-
         PreferUtil preferUtil = new PreferUtil(); //get info from preferences
         timeMove = preferUtil.restoreTimeMove(this);
         timeGame = preferUtil.restoreTimeGame(this);
@@ -83,6 +77,12 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             timeGame = preferUtil.restoreTimeGame(this);
             numberCircles = preferUtil.restoreNumberCircles(this);
         }
+
+        //Создаём Presenter и в аргументе передаём ему this - эта Activity расширяет интерфейс InitGameContract.View
+        mPresenter = new ChooseHowPlayPresenter(this);
+
+        listWords = getIntent().getStringArrayListExtra("listWords");
+        playerList = mPresenter.getPlayerList();
 
         initViews();
 
