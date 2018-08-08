@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.natife.assotiation.R;
 import com.natife.assotiation.game.UtilForDraw.PaintView;
 import com.natife.assotiation.initgame.Player;
@@ -33,7 +36,7 @@ import com.natife.assotiation.utils.PreferUtil;
 import java.util.List;
 import java.util.Objects;
 
-public class GameActivity extends AppCompatActivity implements GameContract.View {
+public class GameActivity extends AppCompatActivity implements GameContract.View, ColorPickerDialogListener {
     private GameContract.Presenter mPresenter;
     private String howExplain;
     private TextView textTimerDraw;
@@ -58,6 +61,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private boolean timerBig;
     private GradientDrawable gd;
     private int timeMove;
+    private static final int DIALOG_ID = 0;
 
 
     @Override
@@ -146,6 +150,24 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         buttonAction = findViewById(R.id.buttonAction);
         layoutForDraw = findViewById(R.id.layout_for_draw);
         buttonPointBrush = findViewById(R.id.buttonPointBrush);
+        buttonPointBrush.setOnClickListener(view -> {
+
+            ColorPickerDialog.newBuilder()
+                    .setDialogType(ColorPickerDialog.TYPE_PRESETS)
+                    .setAllowPresets(false)
+                    .setDialogId(DIALOG_ID)
+                    .setColor(R.color.colorPlayer5)
+                    .setDialogTitle(R.string.select_color)
+                    .setSelectedButtonText(R.string.select)
+                    .setShowAlphaSlider(false)
+                    .setColor(Color.BLACK)
+                    .setPresetsButtonText(R.string.presets)
+                    .setCustomButtonText(R.string.custom)
+                    .setShowAlphaSlider(false)
+                    .show(this);
+
+
+        });
         buttonAction.setOnClickListener(view -> {
             Dialog dialog = new Dialog(this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -255,5 +277,20 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
         }
         mPresenter.stopCountDownTimer();
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        switch (dialogId) {
+            case DIALOG_ID:
+                // We got result from the dialog that is shown when clicking on the icon in the action bar.
+                Toast.makeText(this, "Selected Color: #" + Integer.toHexString(color), Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
     }
 }

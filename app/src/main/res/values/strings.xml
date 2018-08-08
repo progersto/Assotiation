@@ -50,6 +50,11 @@
     <string name="action">Действия</string>
     <string name="brush_settings">Настройки кисти</string>
 
+    <string name="select_color">Выберите цвет</string>
+    <string name="select">Выбрать</string>
+    <string name="custom">Расширено</string>
+    <string name="presets">Предустановленные</string>
+
 
 
 </resources>
