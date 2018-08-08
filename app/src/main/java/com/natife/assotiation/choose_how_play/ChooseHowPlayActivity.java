@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.natife.assotiation.R;
 import com.natife.assotiation.game.GameActivity;
 import com.natife.assotiation.initgame.Player;
+import com.natife.assotiation.utils.Constants;
 import com.natife.assotiation.utils.PreferUtil;
 
 import java.util.ArrayList;
@@ -51,7 +52,9 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     private String howExplain;
     private String word;
     private final int GAME = 1000;
+    private int timeMove;
     private int timeGame;
+    private int numberCircles;
     private boolean timeGameFlag = true;
 
     @Override
@@ -64,7 +67,20 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
         listWords = getIntent().getStringArrayListExtra("listWords");
         playerList = mPresenter.getPlayerList();
-        timeGame = new PreferUtil().restoreTimeGame(this);//get info from preferences
+
+        PreferUtil preferUtil = new PreferUtil(); //get info from preferences
+        timeMove = preferUtil.restoreTimeMove(this);
+        timeGame = preferUtil.restoreTimeGame(this);
+        numberCircles = preferUtil.restoreNumberCircles(this);
+
+        if (timeMove == 0 || timeGame == 0 || numberCircles == 0) {
+            preferUtil.saveTimeMove(this, Constants.TIME_MOVE_DEFOULT);
+            preferUtil.saveTimeGame(this, Constants.TIME_GAME_DEFOULT);
+            preferUtil.saveNumberCircles(this, Constants.NAMBER_LAP_DEFOULT);
+            timeMove = preferUtil.restoreTimeMove(this);
+            timeGame = preferUtil.restoreTimeGame(this);
+            numberCircles = preferUtil.restoreNumberCircles(this);
+        }
 
         initViews();
 
@@ -211,7 +227,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     }
 
     @Override
-    public void timeOver() {
+    public void timeGameOver() {
         timeGameFlag = false;
     }
 

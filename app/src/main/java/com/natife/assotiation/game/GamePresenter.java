@@ -26,7 +26,7 @@ public class GamePresenter implements GameContract.Presenter {
         this.mView = mView;
         this.mRepository = InitGameRepository.getInstance();
 
-        PreferUtil preferUtil = new PreferUtil();
+//        PreferUtil preferUtil = new PreferUtil();
         //get info from preferences
 
 //        timeGame = preferUtil.restoreTimeGame(mView.contextActivity());

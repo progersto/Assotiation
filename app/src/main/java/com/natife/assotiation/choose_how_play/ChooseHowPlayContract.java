@@ -14,7 +14,7 @@ public interface ChooseHowPlayContract {
 
         void showData(String name, Integer color, String word1, String word2);
 
-        void timeOver();
+        void timeGameOver();
     }
 
     interface Presenter {

@@ -13,16 +13,17 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.utils.Constants;
 import com.natife.assotiation.utils.PreferUtil;
 
 public class DialogSettings extends DialogFragment {
 
-    TextView timeMoveTV;
-    TextView timeGameTV;
-    TextView numberCirclesTV;
-    int timeMove;
-    int timeGame;
-    int numberCircles;
+    private TextView timeMoveTV;
+    private TextView timeGameTV;
+    private TextView numberCirclesTV;
+    private int timeMove;
+    private int timeGame;
+    private int numberCircles;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_settings_game, null);
@@ -42,13 +43,13 @@ public class DialogSettings extends DialogFragment {
 
         //for first init
         if (timeMove == 0 || timeGame == 0 || numberCircles == 0) {
-            timeMove = Integer.parseInt(timeMoveTV.getText().toString());
-            timeGame = Integer.parseInt(timeGameTV.getText().toString());
-            numberCircles = Integer.parseInt(numberCirclesTV.getText().toString());
-            preferUtil.saveTimeMove(v.getContext(), timeMove);
-            preferUtil.saveTimeGame(v.getContext(), timeGame);
-            preferUtil.saveNumberCircles(v.getContext(), numberCircles);
-        }else {
+            preferUtil.saveTimeMove(getContext(), Constants.TIME_MOVE_DEFOULT);
+            preferUtil.saveTimeGame(getContext(), Constants.TIME_GAME_DEFOULT);
+            preferUtil.saveNumberCircles(getContext(), Constants.NAMBER_LAP_DEFOULT);
+            timeMove = preferUtil.restoreTimeMove(v.getContext());
+            timeGame = preferUtil.restoreTimeGame(v.getContext());
+            numberCircles = preferUtil.restoreNumberCircles(v.getContext());
+        } else {
             timeMoveTV.setText(String.valueOf(timeMove));
             timeGameTV.setText(String.valueOf(timeGame));
             numberCirclesTV.setText(String.valueOf(numberCircles));

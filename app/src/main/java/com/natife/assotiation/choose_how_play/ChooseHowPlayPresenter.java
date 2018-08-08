@@ -80,7 +80,7 @@ public class ChooseHowPlayPresenter implements ChooseHowPlayContract.Presenter {
 
             @Override
             public void onFinish() {
-                mView.timeOver();
+                mView.timeGameOver();
             }
         };
         mCountDownTimer.start();
