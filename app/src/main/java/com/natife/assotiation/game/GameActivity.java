@@ -231,7 +231,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @Override
     public void finishCurrentGame() {
-        setResult(RESULT_OK, new Intent());
         this.finish();
     }
 
@@ -248,9 +247,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             textTimerDraw.setText(time);
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         if (gd != null) {
             gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
         }

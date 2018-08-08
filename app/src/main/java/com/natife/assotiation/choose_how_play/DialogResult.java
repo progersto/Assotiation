@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -58,6 +59,8 @@ public class DialogResult extends DialogFragment {
             intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
             startActivity(intent);
         });
+        GradientDrawable gd = (GradientDrawable) buttonAgain.getBackground();
+        gd.setColor(ContextCompat.getColor(getContext(), R.color.colorButton));
 
         Collections.sort(localPayerList, new Comparator<Player>() {
             @Override

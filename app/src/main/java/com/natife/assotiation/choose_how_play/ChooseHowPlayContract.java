@@ -1,5 +1,7 @@
 package com.natife.assotiation.choose_how_play;
 
+import android.content.Context;
+
 import com.natife.assotiation.initgame.Player;
 
 import java.util.List;
@@ -14,7 +16,9 @@ public interface ChooseHowPlayContract {
 
         void showData(String name, Integer color, String word1, String word2);
 
-        void timeGameOver();
+        Context getContextActivity();
+
+        void gameOver();
     }
 
     interface Presenter {

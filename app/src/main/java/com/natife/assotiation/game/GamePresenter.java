@@ -11,6 +11,7 @@ import com.natife.assotiation.utils.PreferUtil;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleBiFunction;
 
 public class GamePresenter implements GameContract.Presenter {
     private GameContract.View mView;
@@ -80,6 +81,7 @@ public class GamePresenter implements GameContract.Presenter {
 
             @Override
             public void onFinish() {
+                //TODO добавить здесь вызов диалога
 
             }
         };

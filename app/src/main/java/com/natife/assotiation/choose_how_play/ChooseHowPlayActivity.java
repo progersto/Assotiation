@@ -1,5 +1,6 @@
 package com.natife.assotiation.choose_how_play;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -198,9 +200,9 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
 
     @Override
-    public void startGameActivity(int positionPlayer) {
+    public void startGameActivity(int posPlayer) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("positionPlayer", positionPlayer);
+        intent.putExtra("positionPlayer", posPlayer);
         intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
         intent.putExtra("word", word);
         intent.putExtra("how_explain", howExplain);
@@ -226,20 +228,15 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         colorPlayer = color;
     }
 
+
     @Override
-    public void timeGameOver() {
-        timeGameFlag = false;
+    public Context getContextActivity() {
+        return this;
     }
 
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == GAME && resultCode == RESULT_OK){
-//            String name = data.getStringExtra("name");
-            if (!timeGameFlag){
-                showResultDialog();
-            }
-        }
+    public void gameOver() {
+        timeGameFlag = false;
     }
 
 
@@ -264,6 +261,9 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         textTell.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         textDraw.setTextColor(ContextCompat.getColor(this, R.color.colorTextSelection));
         mPresenter.findDataForFillFields(playerList, listWords, timeGame);
+        if (!timeGameFlag){
+            showResultDialog();
+        }
     }
 
 
