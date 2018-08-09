@@ -259,6 +259,15 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             textTimerDraw.setText(time);
     }
 
+    @Override
+    public void dialogTimeMoveGone(boolean flag) {
+        if (flag){
+            btnTheyGuessed();
+        }else {
+            btnTheyNotGuessed();
+        }
+    }
+
 
     @Override
     protected void onStop() {

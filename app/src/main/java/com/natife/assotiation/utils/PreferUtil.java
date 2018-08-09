@@ -9,7 +9,7 @@ public class PreferUtil {
     private String TIME_MOVE_KEY = "timeMove";
     private String TIME_GAME_KEY = "timeGame";
     private String NUMBER_CIRCLE_KEY = "numberCircles";
-    private String COLOR_DRAW_KEY = "numberCircles";
+    private String COLOR_DRAW_KEY = "colorDraw";
 
 
     public void saveTimeMove(Context context, int value){

@@ -1,8 +1,10 @@
 package com.natife.assotiation.game;
 
+import android.app.AlertDialog;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import com.natife.assotiation.R;
 import com.natife.assotiation.initgame.InitGameContract;
 import com.natife.assotiation.initgame.InitGameRepository;
 import com.natife.assotiation.initgame.Player;
@@ -16,9 +18,6 @@ import java.util.function.ToDoubleBiFunction;
 public class GamePresenter implements GameContract.Presenter {
     private GameContract.View mView;
     private InitGameContract.Repository mRepository;
-
-    private int timeGame;
-    private int numberLap;
     private CountDownTimer mCountDownTimer;
     private int countDownInterval = 1000;
 
@@ -26,12 +25,6 @@ public class GamePresenter implements GameContract.Presenter {
     public GamePresenter(GameContract.View mView) {
         this.mView = mView;
         this.mRepository = InitGameRepository.getInstance();
-
-//        PreferUtil preferUtil = new PreferUtil();
-        //get info from preferences
-
-//        timeGame = preferUtil.restoreTimeGame(mView.contextActivity());
-//        numberLap = preferUtil.restoreNumberCircles(mView.contextActivity());
     }
 
     @Override
@@ -49,13 +42,11 @@ public class GamePresenter implements GameContract.Presenter {
         playerList.get(winPlayer).setCountScore(score);
         playerList.get(winPlayer).setCountWords(countWords);
 
-//        numberLap -= 1;
         mView.finishCurrentGame();
     }
 
     @Override
     public void notWin() {
-//        numberLap -= 1;
         mView.finishCurrentGame();
     }
 
@@ -81,8 +72,15 @@ public class GamePresenter implements GameContract.Presenter {
 
             @Override
             public void onFinish() {
-                //TODO добавить здесь вызов диалога
+                new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
+                        .setTitle(mView.contextActivity().getResources().getString(R.string.time_gone))
 
+                        .setMessage(mView.contextActivity().getResources().getString(R.string.word_is_guessed))
+                        .setPositiveButton(mView.contextActivity().getResources().getString(R.string.they_guessed),
+                                (dialog, button) -> mView.dialogTimeMoveGone(true))
+                        .setNegativeButton(mView.contextActivity().getResources().getString(R.string.they_not_guessed),
+                                (dialog, button) -> mView.dialogTimeMoveGone(false))
+                        .show();
             }
         };
         mCountDownTimer.start();

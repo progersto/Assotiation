@@ -16,6 +16,8 @@ public interface GameContract {
         void setCircularProgressbar(int progress);
 
         void setTextTimer(String time);
+
+        void dialogTimeMoveGone(boolean flag);
     }
 
     interface Presenter {
