@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assotiation</string>
+    <string name="app_name">Association</string>
     <string name="splash">N Game</string>
 
     <string name="text_selection_name">Укажите имена всех игроков</string>
@@ -34,7 +34,7 @@
     <string name="draw">Нарисовать</string>
     <string name="go">Поехали!</string>
 
-    <string name="table_result">Таблица результатов</string>
+    <string name="table_result">Результаты</string>
     <string name="guessed">отгадано</string>
     <string name="words">слов</string>
     <string name="start_over">Начать заново</string>
@@ -56,6 +56,10 @@
     <string name="select">Выбрать</string>
     <string name="custom">Расширено</string>
     <string name="presets">Предустановленные</string>
+
+    <string name="share">Поделиться</string>
+    <string name="share_text">Результат игры Association</string>
+
 
 
 </resources>
