@@ -6,9 +6,11 @@ import android.preference.PreferenceManager;
 
 public class PreferUtil {
 
-    public String TIME_MOVE_KEY = "timeMove";
-    public String TIME_GAME_KEY = "timeGame";
-    public String NUMBER_CIRCLE_KEY = "numberCircles";
+    private String TIME_MOVE_KEY = "timeMove";
+    private String TIME_GAME_KEY = "timeGame";
+    private String NUMBER_CIRCLE_KEY = "numberCircles";
+    private String COLOR_DRAW_KEY = "numberCircles";
+
 
     public void saveTimeMove(Context context, int value){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -44,5 +46,17 @@ public class PreferUtil {
     public int restoreNumberCircles(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(NUMBER_CIRCLE_KEY, 0);
+    }
+
+    public void saveColorDraw(Context context, int value){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(COLOR_DRAW_KEY, value);
+        editor.apply();
+    }
+
+    public int restoreColorDraw(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(COLOR_DRAW_KEY, 0);
     }
 }

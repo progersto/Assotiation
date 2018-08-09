@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.natife.assotiation.R;
+import com.natife.assotiation.utils.PreferUtil;
 
 import java.util.ArrayList;
 
@@ -42,13 +43,13 @@ public class PaintView extends View {
 
     public PaintView(Context context) {
         this(context, null);
-        DEFAULT_COLOR = ContextCompat.getColor(context, R.color.colorDefault);
+        DEFAULT_COLOR = new PreferUtil().restoreColorDraw(context);
     }
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        DEFAULT_COLOR = ContextCompat.getColor(context, R.color.colorDefault);
+        DEFAULT_COLOR = new PreferUtil().restoreColorDraw(context);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);

@@ -73,6 +73,7 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
             preferUtil.saveTimeMove(this, Constants.TIME_MOVE_DEFOULT);
             preferUtil.saveTimeGame(this, Constants.TIME_GAME_DEFOULT);
             preferUtil.saveNumberCircles(this, Constants.NAMBER_LAP_DEFOULT);
+            preferUtil.saveColorDraw(this, ContextCompat.getColor(this, R.color.colorDefault));
             timeMove = preferUtil.restoreTimeMove(this);
             timeGame = preferUtil.restoreTimeGame(this);
             numberCircles = preferUtil.restoreNumberCircles(this);

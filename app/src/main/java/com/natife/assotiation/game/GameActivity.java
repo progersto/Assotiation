@@ -69,7 +69,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         positionPlayer = getIntent().getIntExtra("positionPlayer", 0);
         word = getIntent().getStringExtra("word");
         timeMove = new PreferUtil().restoreTimeMove(this);//get info from preferences
-        colorForStartDialog = ContextCompat.getColor(this, R.color.colorDefault);
+        colorForStartDialog = new PreferUtil().restoreColorDraw(this);
 
         playerList = mPresenter.getPlayerList();
 
@@ -276,6 +276,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 paintView.setColorPaint(color);
                 colorDialog.setColor(color);
                 colorForStartDialog = color;
+                new PreferUtil().saveColorDraw(this, colorForStartDialog);
                 break;
         }
     }
