@@ -1,14 +1,20 @@
 package com.natife.assotiation.resultgame;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +28,12 @@ import com.natife.assotiation.R;
 import com.natife.assotiation.initgame.InitGameActivity;
 import com.natife.assotiation.initgame.Player;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ResultGame extends AppCompatActivity {
@@ -37,6 +47,7 @@ public class ResultGame extends AppCompatActivity {
     private List<Player> playerList;
     private android.support.v7.widget.ShareActionProvider mShareActionProvider;
     private Toolbar toolbar;
+    private LinearLayout layoutResult;
 
 
     @Override
@@ -68,7 +79,7 @@ public class ResultGame extends AppCompatActivity {
             else return -1;
         });
 
-        LinearLayout layoutResult = viewResult.findViewById(R.id.layoutResult);//контейнер для вставки item
+        layoutResult = viewResult.findViewById(R.id.layoutResult);//контейнер для вставки item
 
         boolean isWin = checkWin();
         for (int i = 0; i < playerList.size(); i++) {
@@ -108,18 +119,79 @@ public class ResultGame extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu resource file.
         getMenuInflater().inflate(R.menu.menu_result, menu);
-
+//        Uri bmpUri = getImageUri(this, getScreenshot());
         MenuItem item = menu.findItem(R.id.menu_share);
         mShareActionProvider = (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(item);
         if (mShareActionProvider != null) {
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_text));
-            shareIntent.setType("text/plain");
+            shareIntent.setType("image/jpeg");
             mShareActionProvider.setShareIntent(shareIntent);
+
+            mShareActionProvider.setOnShareTargetSelectedListener(new android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener() {
+                @Override
+                public boolean onShareTargetSelected(android.support.v7.widget.ShareActionProvider shareActionProvider, Intent intent) {
+                    Log.d("kkk","fff");
+                    Uri bmpUri = getImageUri(ResultGame.this, getScreenshot());
+                    intent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                    return false;
+                }
+            });
         }
 
         // Return true to display menu
         return true;
+    }
+
+    private Bitmap getScreenshot(){
+        View v = layoutResult.getRootView();
+        v.setDrawingCacheEnabled(true);
+        return v.getDrawingCache();
+//        BitmapDrawable bitmapDrawable = new BitmapDrawable(bm);
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+        }
+    }
+
+    private void openScreenshot(File imageFile) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(imageFile);
+        intent.setDataAndType(uri, "image/*");
+        startActivity(intent);
     }
 }
