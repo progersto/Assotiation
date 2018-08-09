@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.natife.assotiation.R;
 import com.natife.assotiation.game.GameActivity;
 import com.natife.assotiation.initgame.Player;
+import com.natife.assotiation.resultgame.ResultGame;
 import com.natife.assotiation.utils.Constants;
 import com.natife.assotiation.utils.PreferUtil;
 
@@ -212,12 +213,17 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
 
 
     public void showResultDialog() {
-        DialogResult dialogResult = new DialogResult();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList("playerList", (ArrayList<? extends Parcelable>) playerList);
-        args.putBoolean("timeGameFlag", timeGameFlag);
-        dialogResult.setArguments(args);
-        dialogResult.show(getSupportFragmentManager(), "dialogResult");
+        Intent intent = new Intent(this, ResultGame.class);
+        intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
+        intent.putExtra("timeGameFlag", timeGameFlag);
+        startActivity(intent);
+
+//        DialogResult dialogResult = new DialogResult();
+//        Bundle args = new Bundle();
+//        args.putParcelableArrayList("playerList", (ArrayList<? extends Parcelable>) playerList);
+//        args.putBoolean("timeGameFlag", timeGameFlag);
+//        dialogResult.setArguments(args);
+//        dialogResult.show(getSupportFragmentManager(), "dialogResult");
     }
 
     @Override

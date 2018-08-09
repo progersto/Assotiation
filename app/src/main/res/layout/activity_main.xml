@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/background_login"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".game.GameActivity">
 
     <ImageView
         android:id="@+id/back"
