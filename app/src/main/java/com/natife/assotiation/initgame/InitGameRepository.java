@@ -30,7 +30,7 @@ public class InitGameRepository implements InitGameContract.Repository {
 
     @Override
     public List<Player> addNameInPlayerList() {
-        playerList.add(new Player("", colorList.get(playerList.size() + 1), 0, 0));
+        playerList.add(new Player("", colorList.get(playerList.size() - 1), 0, 0));
         return playerList;
     }
 
