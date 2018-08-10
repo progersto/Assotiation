@@ -67,6 +67,15 @@ public class InitGamePresenter implements InitGameContract.Presenter {
                             .show();
                     return;
                 }
+                for (int j = i +1; j < playerList.size(); j++) {
+                    if (playerList.get(i).getName().equals(playerList.get(j).getName())){
+                        new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
+                                .setMessage(R.string.set_different_name)
+                                .setPositiveButton((R.string.ok), (dialog, which) -> dialog.dismiss())
+                                .show();
+                        return;
+                    }
+                }
             }
             mView.changeScreen(true);
             flagStartGame = true;
