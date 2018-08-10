@@ -48,6 +48,7 @@ public class ResultGame extends AppCompatActivity {
     private android.support.v7.widget.ShareActionProvider mShareActionProvider;
     private Toolbar toolbar;
     private LinearLayout layoutResult;
+    private boolean timeGameFlag;
 
 
     @Override
@@ -59,7 +60,7 @@ public class ResultGame extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        boolean timeGameFlag = getIntent().getBooleanExtra("timeGameFlag", false);
+        timeGameFlag = getIntent().getBooleanExtra("timeGameFlag", false);
         playerList = getIntent().getParcelableArrayListExtra("playerList");
         localPayerList = new ArrayList<>(playerList);
 
@@ -70,6 +71,9 @@ public class ResultGame extends AppCompatActivity {
             intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
             startActivity(intent);
         });
+        ImageView btnBack = viewResult.findViewById(R.id.back);
+        btnBack.setOnClickListener(view -> finish());
+        btnBack.setVisibility(timeGameFlag ? View.VISIBLE : View.INVISIBLE);
         GradientDrawable gd = (GradientDrawable) buttonAgain.getBackground();
         gd.setColor(ContextCompat.getColor(this, R.color.colorButton));
 
@@ -103,8 +107,14 @@ public class ResultGame extends AppCompatActivity {
                 image.setVisibility(View.INVISIBLE);
             layoutResult.addView(newItem);
         }
-
         setContentView(viewResult);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (timeGameFlag){
+            super.onBackPressed();
+        }
     }
 
     private boolean checkWin() {

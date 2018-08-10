@@ -102,6 +102,11 @@ public class InitGamePresenter implements InitGameContract.Presenter {
     }
 
     @Override
+    public Boolean getFlagChangeScreen() {
+        return flagStartGame;
+    }
+
+    @Override
     public void onDestroy() {
 
     }

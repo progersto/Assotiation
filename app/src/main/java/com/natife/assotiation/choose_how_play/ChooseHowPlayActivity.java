@@ -217,13 +217,6 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
         intent.putParcelableArrayListExtra("playerList", (ArrayList<? extends Parcelable>) playerList);
         intent.putExtra("timeGameFlag", timeGameFlag);
         startActivity(intent);
-
-//        DialogResult dialogResult = new DialogResult();
-//        Bundle args = new Bundle();
-//        args.putParcelableArrayList("playerList", (ArrayList<? extends Parcelable>) playerList);
-//        args.putBoolean("timeGameFlag", timeGameFlag);
-//        dialogResult.setArguments(args);
-//        dialogResult.show(getSupportFragmentManager(), "dialogResult");
     }
 
     @Override
@@ -278,5 +271,9 @@ public class ChooseHowPlayActivity extends AppCompatActivity implements ChooseHo
     protected void onStop() {
         super.onStop();
         mPresenter.stopTimerGame();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

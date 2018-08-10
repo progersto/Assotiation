@@ -291,6 +291,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     public void onDialogDismissed(int dialogId) {
     }
 }

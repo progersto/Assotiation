@@ -193,4 +193,10 @@ public class InitGameActivity extends AppCompatActivity implements InitGameContr
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!mPresenter.getFlagChangeScreen())
+        super.onBackPressed();
+    }
 }

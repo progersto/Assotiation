@@ -28,6 +28,8 @@ public interface InitGameContract {
 
         void btnSettingsClicked();
 
+        Boolean getFlagChangeScreen();
+
         void onDestroy();
     }
 

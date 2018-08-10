@@ -74,12 +74,12 @@ public class GamePresenter implements GameContract.Presenter {
             public void onFinish() {
                 new android.support.v7.app.AlertDialog.Builder(mView.contextActivity())
                         .setTitle(mView.contextActivity().getResources().getString(R.string.time_gone))
-
                         .setMessage(mView.contextActivity().getResources().getString(R.string.word_is_guessed))
                         .setPositiveButton(mView.contextActivity().getResources().getString(R.string.they_guessed),
                                 (dialog, button) -> mView.dialogTimeMoveGone(true))
                         .setNegativeButton(mView.contextActivity().getResources().getString(R.string.they_not_guessed),
                                 (dialog, button) -> mView.dialogTimeMoveGone(false))
+                        .setCancelable(false)
                         .show();
             }
         };
