@@ -3,11 +3,15 @@ package com.natife.assotiation.resultgame;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -16,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,8 +59,9 @@ public class ResultGame extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View viewResult = getLayoutInflater().inflate(R.layout.activity_result_game, null);
+
+        layoutResult = viewResult.findViewById(R.id.layoutResult);//контейнер для вставки item
         toolbar = viewResult.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -82,8 +88,6 @@ public class ResultGame extends AppCompatActivity {
             else if (player.getCountScore() < t1.getCountScore()) return 1;
             else return -1;
         });
-
-        layoutResult = viewResult.findViewById(R.id.layoutResult);//контейнер для вставки item
 
         boolean isWin = checkWin();
         for (int i = 0; i < playerList.size(); i++) {
@@ -112,96 +116,74 @@ public class ResultGame extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (timeGameFlag){
+        if (timeGameFlag) {
             super.onBackPressed();
         }
     }
 
     private boolean checkWin() {
         boolean flag = true;
-        if (localPayerList.get(0).getCountScore() == localPayerList.get(1).getCountScore() ) {
+        if (localPayerList.get(0).getCountScore() == localPayerList.get(1).getCountScore()) {
             flag = false;
         }
         return flag;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate menu resource file.
-        getMenuInflater().inflate(R.menu.menu_result, menu);
-//        Uri bmpUri = getImageUri(this, getScreenshot());
-        MenuItem item = menu.findItem(R.id.menu_share);
-        mShareActionProvider = (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        if (mShareActionProvider != null) {
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_text));
-            shareIntent.setType("image/jpeg");
-            mShareActionProvider.setShareIntent(shareIntent);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_share:
 
-            mShareActionProvider.setOnShareTargetSelectedListener(new android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener() {
-                @Override
-                public boolean onShareTargetSelected(android.support.v7.widget.ShareActionProvider shareActionProvider, Intent intent) {
-                    Log.d("kkk","fff");
-                    Uri bmpUri = getImageUri(ResultGame.this, getScreenshot());
-                    intent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    return false;
-                }
-            });
+                Bitmap bitmap = getBitmapFromView(layoutResult);
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                startShare(bitmap);
+               break;
         }
-
-        // Return true to display menu
         return true;
     }
 
-    private Bitmap getScreenshot(){
-        View v = layoutResult.getRootView();
-        v.setDrawingCacheEnabled(true);
-        return v.getDrawingCache();
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(bm);
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    private void takeScreenshot() {
-        Date now = new Date();
-        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
-
+    private void startShare(Bitmap bitmap) {
         try {
-            // image naming and path  to include sd card  appending name you choose for file
-            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+            File file = new File(this.getExternalCacheDir(),"logicchip.png");
+            FileOutputStream fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
 
-            // create bitmap screen capture
-            View v1 = getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            v1.setDrawingCacheEnabled(false);
-
-            File imageFile = new File(mPath);
-
-            FileOutputStream outputStream = new FileOutputStream(imageFile);
-            int quality = 100;
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-            outputStream.flush();
-            outputStream.close();
-
-            openScreenshot(imageFile);
-        } catch (Throwable e) {
-            // Several error may come out with file handling or DOM
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_text));
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            intent.setType("image/png");
+            startActivity(Intent.createChooser(intent, "Share image via"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void openScreenshot(File imageFile) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(imageFile);
-        intent.setDataAndType(uri, "image/*");
-        startActivity(intent);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_result, menu);
+        return true;
+    }
+
+
+
+    private Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        } else {
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        view.draw(canvas);
+        return returnedBitmap;
     }
 }

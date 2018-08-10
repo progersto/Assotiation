@@ -64,6 +64,11 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/rrr"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+
 
     <RelativeLayout
         android:id="@+id/buttonAgain"
